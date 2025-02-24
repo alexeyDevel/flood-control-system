@@ -1,0 +1,38 @@
+// Header.module.scss
+.headerWrapper:global(.MuiPaper-root) {
+  background-color: #00b2748c;
+
+  .logoIcon {
+    margin-right: 2rem;
+  }
+}
+
+.menuButton {
+  display: none;
+
+  @media (max-width: 900px) {
+    display: block;
+  }
+}
+
+.navLinks {
+  display: flex;
+  gap: 16px;
+
+  @media (max-width: 900px) {
+    display: none;
+  }
+}
+
+.mobileMenu {
+  display: none;
+
+  @media (max-width: 900px) {
+    display: block;
+  }
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+}

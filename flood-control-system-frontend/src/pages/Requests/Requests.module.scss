@@ -1,0 +1,9 @@
+.container {
+  padding-top: 50px;
+  max-width: 1600px;
+  margin: 0 auto;
+
+  :global(.MuiTableContainer-root) {
+    border-radius: 16px;
+  }
+}

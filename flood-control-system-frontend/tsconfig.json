@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "alwaysStrict": true,
+    // settings affecting coding
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    // every rule from "strict"
+    "noImplicitAny": true,
+    "strictPropertyInitialization": false,
+    "strictBindCallApply": true,
+    "noImplicitThis": true,
+    "strictFunctionTypes": true,
+    "useUnknownInCatchVariables": true,
+    "typeRoots": ["./src/environment.d.ts", "./node_modules/@types"],
+    "strictNullChecks": true,
+    "paths": {
+      "src/*": ["./src/*"],
+      "assets/*": ["./src/assets/*"],
+      "routes/*": ["./src/routes/*"],
+      "components/*": ["./src/components/*"],
+      "ui/*": ["./src/components/ui/*"]
+    }
+  },
+  "include": ["src", "vite.config.ts", "src/types/declarations.d.ts"],
+  "files": ["./src/types/declarations.d.ts"]
+}

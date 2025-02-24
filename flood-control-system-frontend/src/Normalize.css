@@ -1,0 +1,78 @@
+/* Сброс стилей */
+
+/* Удаление стандартных стилей */
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* Установка базовых стилей */
+body {
+  line-height: 1;
+}
+
+/* Сброс стилей для списков */
+ol,
+ul {
+  list-style: none;
+}
+
+/* Сброс стилей для ссылок */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Сброс стилей для таблиц */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Сброс стилей для изображений */
+img {
+  border: 0;
+}
+
+/* Сброс стилей для форм */
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/* Сброс стилей для кнопок */
+button {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+}
+
+/* Сброс стилей для полей ввода */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="tel"],
+input[type="number"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0;
+}
+
+/* Сброс стилей для кнопок отправки */
+input[type="submit"],
+input[type="button"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0;
+  cursor: pointer;
+}
