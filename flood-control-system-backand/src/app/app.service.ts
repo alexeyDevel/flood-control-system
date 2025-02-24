@@ -1,0 +1,48 @@
+import { Injectable } from '@nestjs/common';
+import { IStart } from './app.type';
+import { existsSync, mkdir, writeFile } from 'node:fs';
+import * as path from 'node:path';
+
+@Injectable()
+export class AppService {
+  getHello(): string {
+    return 'Hello World!';
+  }
+
+  createPublicDir() {
+    if (!existsSync(path.join(__dirname, '../', 'public'))) {
+      mkdir(
+        path.join(__dirname, '../', 'public'),
+        { recursive: true },
+        (err) => {
+          if (err) {
+            console.error('Ошибка создания папки public:', err);
+          } else {
+            console.log('Папка public создана успешно');
+          }
+        },
+      );
+    }
+  }
+
+  async start(props: IStart): Promise<string> {
+    const currentDate = new Date();
+    const fileName = `${props.name}-${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}-${currentDate.getHours()}-${currentDate.getMinutes()}-${currentDate.getSeconds()}.txt`;
+    console.log(__dirname);
+    this.createPublicDir();
+    const filePath = path.join(__dirname, '../public', fileName);
+    const content = 'Привет, мир!';
+
+    writeFile(filePath, content, (err) => {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log(`Файл ${fileName} создан успешно!`);
+      }
+    });
+
+    return new Promise((resolve) => {
+      resolve(`Файл ${fileName} создан успешно!`);
+    });
+  }
+}
