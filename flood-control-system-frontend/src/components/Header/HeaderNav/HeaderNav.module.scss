@@ -1,0 +1,8 @@
+.navLinks {
+  display: flex;
+  gap: 16px;
+
+  @media (max-width: 900px) {
+    display: none;
+  }
+}

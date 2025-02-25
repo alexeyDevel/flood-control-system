@@ -37,7 +37,17 @@ export const OptimizationRequest = () => {
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" sx={{ paddingTop: "50px" }}>
+      <Box sx={{ mb: 2 }}>
+        <Button
+          component="a"
+          href="/services/optimization/requests"
+          variant="contained"
+          sx={{ mr: 2 }}
+        >
+          Мои запросы
+        </Button>
+      </Box>
       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
         {/* Autocomplete для участка */}
         <FormControl fullWidth margin="normal">
@@ -102,6 +112,8 @@ export const OptimizationRequest = () => {
           type="submit"
           fullWidth
           variant="contained"
+          href="/services/optimization/requests"
+          LinkComponent={"a"}
           sx={{ mt: 3, mb: 2 }}
         >
           Отправить

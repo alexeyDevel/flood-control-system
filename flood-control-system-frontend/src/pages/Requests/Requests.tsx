@@ -10,6 +10,8 @@ import {
   TableRow,
   IconButton,
   Pagination,
+  Button,
+  Container,
 } from "@mui/material";
 import { CheckCircle, Error, Pending } from "@mui/icons-material";
 import styles from "./Requests.module.scss";
@@ -59,7 +61,17 @@ export const Requests = () => {
   );
 
   return (
-    <Box className={styles.container}>
+    <Container className={styles.container}>
+      <Box sx={{ mb: 2 }}>
+        <Button
+          component="a"
+          href="/services/optimization"
+          variant="contained"
+          sx={{ mr: 2 }}
+        >
+          Создать новый запрос
+        </Button>
+      </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -109,6 +121,6 @@ export const Requests = () => {
           color="primary"
         />
       </Box>
-    </Box>
+    </Container>
   );
 };

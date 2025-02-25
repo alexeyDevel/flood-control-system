@@ -1,9 +1,13 @@
 // Header.module.scss
 .headerWrapper:global(.MuiPaper-root) {
-  background-color: #00b2748c;
+  background-color: #00b274;
 
   .logoIcon {
     margin-right: 2rem;
+  }
+  .logo {
+    color: fff;
+    margin-right: 3rem;
   }
 }
 
@@ -12,15 +16,6 @@
 
   @media (max-width: 900px) {
     display: block;
-  }
-}
-
-.navLinks {
-  display: flex;
-  gap: 16px;
-
-  @media (max-width: 900px) {
-    display: none;
   }
 }
 
