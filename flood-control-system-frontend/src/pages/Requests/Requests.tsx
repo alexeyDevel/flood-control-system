@@ -14,7 +14,8 @@ import {
   Container,
 } from "@mui/material";
 import { CheckCircle, Error, Pending } from "@mui/icons-material";
-import styles from "./Requests.module.scss";
+import { Link } from "react-router";
+// import styles from "./Requests.module.scss";
 
 interface IRequest {
   name: string;
@@ -61,16 +62,22 @@ export const Requests = () => {
   );
 
   return (
-    <Container className={styles.container}>
-      <Box sx={{ mb: 2 }}>
-        <Button
-          component="a"
-          href="/services/optimization"
-          variant="contained"
-          sx={{ mr: 2 }}
-        >
-          Создать новый запрос
-        </Button>
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 2,
+        }}
+      >
+        <Link to="/services/optimization/create-request">
+          <Button variant="contained">Создать новый запрос</Button>
+        </Link>
+
+        <Link to="/services/optimization">
+          <Button variant="contained">О проекте</Button>
+        </Link>
       </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">

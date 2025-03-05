@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { HORIZONS, PILITS_LIST } from "./OptimizationRequest.const";
+import { Link } from "react-router";
 
 interface IRequestData {
   plot: string;
@@ -37,16 +38,21 @@ export const OptimizationRequest = () => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ paddingTop: "50px" }}>
-      <Box sx={{ mb: 2 }}>
-        <Button
-          component="a"
-          href="/services/optimization/requests"
-          variant="contained"
-          sx={{ mr: 2 }}
-        >
-          Мои запросы
-        </Button>
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 2,
+        }}
+      >
+        <Link to="/services/optimization/requests">
+          <Button variant="contained">Мои запросы</Button>
+        </Link>
+        <Link to="/services/optimization">
+          <Button variant="contained">О проекте</Button>
+        </Link>
       </Box>
       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
         {/* Autocomplete для участка */}

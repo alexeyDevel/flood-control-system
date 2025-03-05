@@ -8,13 +8,12 @@ export default defineConfig({
   resolve: {
     alias: {
       src: "/src",
-      // assets: "/src/assets",
+      assets: "/src/assets",
       routes: "/src/routes",
       components: "/src/components",
       pages: "/src/pages",
       ui: "/src/components/ui",
     },
   },
-  base: "http://localhost:3000",
   plugins: [react()],
 });

@@ -1,23 +1,46 @@
-import { Routes, Route, Outlet } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router";
 import { SingIn } from "./pages/SingIn";
 import theme from "./configs/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import { Main } from "./layouts/Main";
 import { OptimizationRequest } from "./pages/OptimizationRequest";
 import { Requests } from "./pages/Requests";
-//test
+import { OptimizationProjectPage } from "./pages/static/OptimizationProjectPage";
+
+// Создаем маршруты с помощью createBrowserRouter
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Main />,
+    children: [
+      {
+        path: "services/optimization",
+        element: <OptimizationProjectPage />,
+      },
+      {
+        path: "services/optimization/create-request",
+        element: <OptimizationRequest />,
+      },
+      {
+        path: "services/optimization/requests",
+        element: <Requests />,
+      },
+    ],
+  },
+  {
+    path: "login",
+    element: <SingIn />,
+  },
+  {
+    path: "*",
+    element: <div>400000004</div>,
+  },
+]);
+
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Routes>
-        <Route path="/" element={<Main />}>
-          <Route path="services" element={<Outlet />}>
-            <Route path="optimization" element={<OptimizationRequest />} />
-            <Route path="optimization/requests" element={<Requests />} />
-          </Route>
-        </Route>
-        <Route path="login" element={<SingIn />} />
-      </Routes>
+      <RouterProvider router={router} />
     </ThemeProvider>
   );
 }

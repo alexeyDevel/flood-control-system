@@ -4,7 +4,7 @@ import Container from "@mui/material/Container";
 import styles from "./Header.module.scss";
 // import LogoIcon from "src/assets/logoIcon.svg";
 import { HeaderNav } from "./HeaderNav";
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 
 export function Header() {
   return (
@@ -20,6 +20,7 @@ export function Header() {
           /> */}
           <Typography className={styles.logo}>AILab "POLIGON"</Typography>
           <HeaderNav />
+          <Button color="inherit">Login</Button>
         </Toolbar>
       </Container>
     </AppBar>
