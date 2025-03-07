@@ -8,7 +8,7 @@ export const HeaderNav = () => {
   return (
     <Box className={styles.navLinks}>
       {PAGES.map((page) => (
-        <NavItem page={page} />
+        <NavItem key={page.path} page={page} />
       ))}
     </Box>
   );

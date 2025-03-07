@@ -25,9 +25,9 @@ export class AppService {
     }
   }
 
-  async start(props: IStart): Promise<string> {
-    const currentDate = new Date();
-    const fileName = `${props.name}-${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}-${currentDate.getHours()}-${currentDate.getMinutes()}-${currentDate.getSeconds()}.txt`;
+  async start(props: IStart): Promise<{ message: string }> {
+    const currentDate = Date.now();
+    const fileName = `${props.name}-${currentDate}.txt`;
     console.log(__dirname);
     this.createPublicDir();
     const filePath = path.join(__dirname, '../public', fileName);
@@ -42,7 +42,7 @@ export class AppService {
     });
 
     return new Promise((resolve) => {
-      resolve(`Файл ${fileName} создан успешно!`);
+      resolve({ message: `Файл ${fileName} создан успешно!` });
     });
   }
 }

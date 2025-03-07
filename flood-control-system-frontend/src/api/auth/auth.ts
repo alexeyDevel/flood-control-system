@@ -15,5 +15,5 @@ export interface ILoginResponseDto {
 export const fetchLoginUser = async (
   credentials: ICredentialsDto
 ): Promise<ILoginResponseDto> => {
-  return await api.post(`/api/login`, { json: credentials }).json();
+  return await api.post(`auth/login`, { json: credentials }).json();
 };

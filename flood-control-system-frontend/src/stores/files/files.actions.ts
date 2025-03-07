@@ -1,7 +1,9 @@
-import { ICredentialsDto, fetchLoginUser } from "src/api";
+import { getFiles } from "src/api";
+import { $files } from "./files";
 
-const fetchFileList = async (credentials: ICredentialsDto) => {
-  await fetchLoginUser(credentials);
+const fetchFileList = async () => {
+  const files = await getFiles();
+  $files.setKey("fileList", files);
 };
 
-export { fetchFileList };
+export const filesActions = { fetchFileList };

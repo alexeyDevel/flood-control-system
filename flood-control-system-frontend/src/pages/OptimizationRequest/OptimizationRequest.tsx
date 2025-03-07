@@ -9,7 +9,9 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { HORIZONS, PILITS_LIST } from "./OptimizationRequest.const";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { start } from "src/api/app/app";
+import { pushNotification } from "src/stores/notification";
 
 interface IRequestData {
   plot: string;
@@ -24,6 +26,8 @@ export const OptimizationRequest = () => {
     block: "",
   });
 
+  const navigate = useNavigate();
+
   // const handleChange = (event: SelectChangeEvent<string>) => {
   //   const { name, value } = event.target;
   //   setFormData((prevState) => ({
@@ -34,7 +38,24 @@ export const OptimizationRequest = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(formData);
+    start({
+      name: formData.plot,
+      horizon: formData.horizon,
+      block: formData.block,
+    })
+      .then(() => {
+        pushNotification({
+          title: "Запрос успешно отправлен!",
+          variant: "success",
+        });
+        navigate("/services/optimization/requests");
+      })
+      .catch(() =>
+        pushNotification({
+          title: "Ошибка!",
+          variant: "error",
+        })
+      );
   };
 
   return (
@@ -118,7 +139,6 @@ export const OptimizationRequest = () => {
           type="submit"
           fullWidth
           variant="contained"
-          href="/services/optimization/requests"
           LinkComponent={"a"}
           sx={{ mt: 3, mb: 2 }}
         >

@@ -1,0 +1,32 @@
+@import "src/assets/styles/index.scss";
+
+.notification {
+  background-color: $white-color;
+  border-radius: 8px;
+  padding: 32px 32px 24px 32px;
+
+  .contentWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    .contentInner {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      .title {
+        margin: 0;
+        color: $gray-140-color;
+      }
+    }
+
+    .mainButton {
+      margin-left: auto;
+
+      .buttonText {
+        color: $white-color;
+      }
+    }
+  }
+}

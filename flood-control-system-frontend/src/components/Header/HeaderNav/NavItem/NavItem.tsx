@@ -86,8 +86,8 @@ export const NavItem = ({ page }: { page: TPage }) => {
                   aria-labelledby="composition-button"
                   onKeyDown={handleListKeyDown}
                 >
-                  {page.subpages?.map((item) => (
-                    <MenuItem onClick={handleClose}>
+                  {page.subpages?.map((item, index) => (
+                    <MenuItem key={index} onClick={handleClose}>
                       {item.path ? (
                         <Link to={item.path}>{item.name}</Link>
                       ) : (

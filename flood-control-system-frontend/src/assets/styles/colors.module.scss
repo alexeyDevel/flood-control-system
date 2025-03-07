@@ -1,0 +1,42 @@
+@import "src/assets/styles/index.scss";
+
+:export {
+  // Brand Colors
+  accentColor: $accent-color;
+  hoverAccentColor: $hover-accent-color;
+  onAccentColor: $on-accent-color;
+  accentAreaColor: $accent-area-color;
+  whiteColor: $white-color;
+  primaryColor: $primary-color;
+
+  // Gray and Options
+  gray140Color: $gray-140-color;
+  gray120Color: $gray-120-color;
+  gray100Color: $gray-100-color;
+  gray60Color: $gray-60-color;
+  gray40Color: $gray-40-color;
+  gray30Color: $gray-30-color;
+  gray10Color: $gray-10-color;
+  gray5Color: $gray-5-color;
+  gray01Color: $gray-01-color;
+
+  // Secondary Colors
+  orange100Color: $orange-100-color;
+  terracot100Color: $terracot-100-color;
+  red100Color: $red-100-color;
+  blue100Color: $blue-100-color;
+  orange20Color: $orange-20-color;
+  terracot20Color: $terracot-20-color;
+  red20Color: $red-20-color;
+  blue20Color: $blue-20-color;
+  accent20Color: $accent-20-color;
+  green120Color: $green-120-color;
+  orange120Color: $orange-120-color;
+  blue120Color: $blue-120-color;
+  hoverGreen100Color: $hover-green-100-color;
+
+  // Utility Colors
+  success100Color: $success-100-color;
+  danger100Color: $danger-100-color;
+  warning100Color: $warning-100-color;
+}

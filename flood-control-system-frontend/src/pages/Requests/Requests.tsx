@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Paper,
@@ -15,6 +15,9 @@ import {
 } from "@mui/material";
 import { CheckCircle, Error, Pending } from "@mui/icons-material";
 import { Link } from "react-router";
+import { useStore } from "@nanostores/react";
+import { $files } from "src/stores/files/files";
+import { filesActions } from "src/stores/files/files.actions";
 // import styles from "./Requests.module.scss";
 
 interface IRequest {
@@ -47,7 +50,11 @@ const requests: IRequest[] = [
 const ITEMS_PER_PAGE = 5;
 
 export const Requests = () => {
+  const { fileList } = useStore($files);
   const [currentPage, setCurrentPage] = useState(1);
+  useEffect(() => {
+    filesActions.fetchFileList();
+  }, []);
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
@@ -55,11 +62,6 @@ export const Requests = () => {
   ) => {
     setCurrentPage(page);
   };
-
-  const paginatedRequests = requests.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  );
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -90,20 +92,20 @@ export const Requests = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedRequests.map((request) => (
+            {fileList.map((request, index) => (
               <TableRow
-                key={request.name}
+                key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {request.name}
+                  {request}
                 </TableCell>
                 <TableCell align="right">
-                  {request.status === "success" ? (
+                  {requests[0].status === "success" ? (
                     <IconButton>
                       <CheckCircle color="success" />
                     </IconButton>
-                  ) : request.status === "error" ? (
+                  ) : requests[0].status === "error" ? (
                     <IconButton>
                       <Error color="error" />
                     </IconButton>
@@ -113,8 +115,8 @@ export const Requests = () => {
                     </IconButton>
                   )}
                 </TableCell>
-                <TableCell align="right">{request.startTime}</TableCell>
-                <TableCell align="right">{request.endTime}</TableCell>
+                <TableCell align="right">{requests[0].startTime}</TableCell>
+                <TableCell align="right">{requests[0].endTime}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -122,7 +124,7 @@ export const Requests = () => {
       </TableContainer>
       <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
         <Pagination
-          count={Math.ceil(requests.length / ITEMS_PER_PAGE)}
+          count={Math.ceil(fileList.length / ITEMS_PER_PAGE)}
           page={currentPage}
           onChange={handlePageChange}
           color="primary"

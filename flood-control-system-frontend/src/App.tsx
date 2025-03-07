@@ -6,6 +6,8 @@ import { Main } from "./layouts/Main";
 import { OptimizationRequest } from "./pages/OptimizationRequest";
 import { Requests } from "./pages/Requests";
 import { OptimizationProjectPage } from "./pages/static/OptimizationProjectPage";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+import { GlobalProvider } from "./contexts/GlobalContext";
 
 // Создаем маршруты с помощью createBrowserRouter
 const router = createBrowserRouter([
@@ -19,11 +21,19 @@ const router = createBrowserRouter([
       },
       {
         path: "services/optimization/create-request",
-        element: <OptimizationRequest />,
+        element: (
+          <ProtectedRoute>
+            <OptimizationRequest />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "services/optimization/requests",
-        element: <Requests />,
+        element: (
+          <ProtectedRoute>
+            <Requests />
+          </ProtectedRoute>
+        ),
       },
     ],
   },
@@ -40,7 +50,9 @@ const router = createBrowserRouter([
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
-      <RouterProvider router={router} />
+      <GlobalProvider>
+        <RouterProvider router={router} />
+      </GlobalProvider>
     </ThemeProvider>
   );
 }
