@@ -18,6 +18,7 @@ import { Link } from "react-router";
 import { useStore } from "@nanostores/react";
 import { $files } from "src/stores/files/files";
 import { filesActions } from "src/stores/files/files.actions";
+import { downloadFile } from "src/api";
 // import styles from "./Requests.module.scss";
 
 interface IRequest {
@@ -89,6 +90,7 @@ export const Requests = () => {
               <TableCell align="right">Статус</TableCell>
               <TableCell align="right">Время начала</TableCell>
               <TableCell align="right">Время завершения</TableCell>
+              <TableCell align="right">Скачать</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -117,6 +119,9 @@ export const Requests = () => {
                 </TableCell>
                 <TableCell align="right">{requests[0].startTime}</TableCell>
                 <TableCell align="right">{requests[0].endTime}</TableCell>
+                <TableCell align="right">
+                  <Button onClick={() => downloadFile(request)}>Скачать</Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

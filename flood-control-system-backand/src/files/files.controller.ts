@@ -12,6 +12,8 @@ import {
 import { FilesService } from './files.service';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
+import * as path from 'path';
+import * as fs from 'fs';
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
@@ -26,10 +28,26 @@ export class FilesController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get(':fileName')
-  downloadFile(@Param('fileName') fileName: string, @Res() res: Response) {
-    const filePath = this.filesService.getFilePath(fileName);
-    res.download(filePath);
+  @Post('download')
+  downloadFile(@Body() data: { fullName: string }, @Res() res: Response) {
+    try {
+      const filePath = this.filesService.getFilePath(data.fullName);
+      if (!fs.existsSync(filePath)) {
+        res.status(404).send('Файл не найден');
+        return;
+      }
+      const fileBuffer = fs.readFileSync(filePath);
+      const fileName = path.basename(filePath);
+      const encodedFileName = encodeURIComponent(fileName);
+      res.set({
+        'Content-Disposition': `attachment; filename*=UTF-8''${encodedFileName}`,
+        'Content-Type': 'application/octet-stream',
+      });
+      res.send(fileBuffer);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Ошибка скачивания файла');
+    }
   }
 
   // @Post()
