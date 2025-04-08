@@ -8,22 +8,18 @@ import {
   Autocomplete,
 } from "@mui/material";
 import { useState } from "react";
-import { HORIZONS, PILITS_LIST } from "./OptimizationRequest.const";
+import { FIELD, STRATS, NGDU, AREA_LIST } from "./OptimizationRequest.const";
 import { Link, useNavigate } from "react-router";
-import { start } from "src/api/app/app";
+import { IStart, start } from "src/api/app/app";
 import { pushNotification } from "src/stores/notification";
 
-interface IRequestData {
-  plot: string;
-  horizon: string;
-  block: string;
-}
-
 export const OptimizationRequest = () => {
-  const [formData, setFormData] = useState<IRequestData>({
-    plot: "",
-    horizon: "",
-    block: "",
+  const [formData, setFormData] = useState<IStart>({
+    ngdu: "",
+    field: "",
+    area: "",
+    bl: "",
+    strat: "",
   });
 
   const navigate = useNavigate();
@@ -39,9 +35,11 @@ export const OptimizationRequest = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     start({
-      name: formData.plot,
-      horizon: formData.horizon,
-      block: formData.block,
+      ngdu: formData.ngdu,
+      field: formData.field,
+      area: formData.area,
+      bl: formData.bl,
+      strat: formData.strat,
     })
       .then(() => {
         pushNotification({
@@ -76,15 +74,50 @@ export const OptimizationRequest = () => {
         </Link>
       </Box>
       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-        {/* Autocomplete для участка */}
         <FormControl fullWidth margin="normal">
           <Autocomplete
-            options={PILITS_LIST}
-            value={formData.plot}
+            options={NGDU}
+            value={formData.ngdu}
             onChange={(_, newValue) => {
               setFormData((prevState) => ({
                 ...prevState,
-                plot: newValue || "",
+                ngdu: newValue || "",
+              }));
+            }}
+            renderInput={(params) => (
+              <TextField {...params} label="НГДУ" placeholder="Выберите НГДУ" />
+            )}
+          />
+        </FormControl>
+
+        <FormControl fullWidth margin="normal">
+          <Autocomplete
+            options={FIELD}
+            value={formData.field}
+            onChange={(_, newValue) => {
+              setFormData((prevState) => ({
+                ...prevState,
+                field: newValue || "",
+              }));
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Месторождение"
+                placeholder="Выберите месторождение"
+              />
+            )}
+          />
+        </FormControl>
+        {/* Autocomplete для участка */}
+        <FormControl fullWidth margin="normal">
+          <Autocomplete
+            options={AREA_LIST}
+            value={formData.area}
+            onChange={(_, newValue) => {
+              setFormData((prevState) => ({
+                ...prevState,
+                area: newValue || "",
               }));
             }}
             renderInput={(params) => (
@@ -100,12 +133,12 @@ export const OptimizationRequest = () => {
         {/* Autocomplete для горизонта */}
         <FormControl fullWidth margin="normal">
           <Autocomplete
-            options={HORIZONS}
-            value={formData.horizon}
+            options={STRATS}
+            value={formData.strat}
             onChange={(_, newValue) => {
               setFormData((prevState) => ({
                 ...prevState,
-                horizon: newValue || "",
+                strat: newValue || "",
               }));
             }}
             renderInput={(params) => (
@@ -122,11 +155,11 @@ export const OptimizationRequest = () => {
         <FormControl fullWidth margin="normal">
           <Autocomplete
             options={Array.from({ length: 20 }, (_, i) => (i + 1).toString())}
-            value={formData.block}
+            value={formData.bl}
             onChange={(_, newValue) => {
               setFormData((prevState) => ({
                 ...prevState,
-                block: newValue || "",
+                bl: newValue || "",
               }));
             }}
             renderInput={(params) => (

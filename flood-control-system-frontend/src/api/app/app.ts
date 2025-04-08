@@ -1,9 +1,11 @@
 import { api } from "../config";
 
-interface IStart {
-  name: string;
-  horizon: string;
-  block: string;
+export interface IStart {
+  ngdu: string;
+  field: string;
+  area: string;
+  bl: string;
+  strat: string;
 }
 
 export const start = async (params: IStart): Promise<{ message: string }> => {

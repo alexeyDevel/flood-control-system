@@ -69,6 +69,7 @@ export const NavItem = ({ page }: { page: TPage }) => {
         placement="bottom-start"
         transition
         disablePortal
+        sx={{ zIndex: 1000 }}
       >
         {({ TransitionProps, placement }) => (
           <Grow
