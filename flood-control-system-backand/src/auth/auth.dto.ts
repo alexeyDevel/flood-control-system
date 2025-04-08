@@ -15,7 +15,7 @@ export class CredentialsDto {
 
   @IsNotEmpty()
   @IsString()
-  @MinLength(8) // Minimum password length (adjust as needed)
+  @MinLength(4) // Minimum password length (adjust as needed)
   @MaxLength(32) // Maximum password length (adjust as needed)
   readonly password: string;
 }

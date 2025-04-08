@@ -4,13 +4,21 @@ import { IStart } from './app.type';
 export class StartDto implements IStart {
   @IsString()
   @IsNotEmpty()
-  name: string;
+  ngdu: string;
 
   @IsString()
   @IsNotEmpty()
-  horizon: string;
+  field: string;
 
   @IsString()
   @IsNotEmpty()
-  block: string;
+  area: string;
+
+  @IsString()
+  @IsNotEmpty()
+  bl: string;
+
+  @IsString()
+  @IsNotEmpty()
+  strat: string;
 }

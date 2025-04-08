@@ -19,7 +19,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: extractJwtAndLog(),
       ignoreExpiration: false,
-      secretOrKey: process.env.JWT_KEY ?? 'secret',
+      secretOrKey: process.env.FCS_JWT_KEY ?? 'test-secret-key',
     });
   }
 

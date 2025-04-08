@@ -1,5 +1,7 @@
 export interface IStart {
-  name: string;
-  horizon: string;
-  block: string;
+  ngdu: string;
+  field: string;
+  area: string;
+  bl: string;
+  strat: string;
 }
