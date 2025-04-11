@@ -10,6 +10,7 @@ import { AuthModule } from 'src/auth/auth.module';
 import { FilesModule } from 'src/files/files.module';
 import * as process from 'process';
 import * as dotenv from 'dotenv';
+import { ProcessService } from './services/process.service';
 
 dotenv.config();
 
@@ -25,6 +26,6 @@ dotenv.config();
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ProcessService],
 })
 export class AppModule {}

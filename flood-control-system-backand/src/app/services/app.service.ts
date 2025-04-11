@@ -1,29 +1,36 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { IStart } from '../app.type';
 import { existsSync, mkdir, writeFile, copyFile } from 'node:fs';
 import * as path from 'node:path';
+import { ProcessService } from './process.service';
+import * as process from 'process';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 @Injectable()
 export class AppService {
+  constructor(private readonly processService: ProcessService) {}
+
   getHello(): string {
     return 'Hello World!';
   }
 
-  createPublicDir() {
-    if (!existsSync(path.join(__dirname, '../', 'public'))) {
-      mkdir(
-        path.join(__dirname, '../', 'public'),
-        { recursive: true },
-        (err) => {
-          if (err) {
-            console.error('Ошибка создания папки public:', err);
-          } else {
-            console.log('Папка public создана успешно');
-          }
-        },
-      );
-    }
-  }
+  // createPublicDir() {
+  //   if (!existsSync(path.join(__dirname, '../', 'public'))) {
+  //     mkdir(
+  //       path.join(__dirname, '../', 'public'),
+  //       { recursive: true },
+  //       (err) => {
+  //         if (err) {
+  //           console.error('Ошибка создания папки public:', err);
+  //         } else {
+  //           console.log('Папка public создана успешно');
+  //         }
+  //       },
+  //     );
+  //   }
+  // }
 
   // async createJsonFile(props: IStart): Promise<{ message: string }> {
   //   return new Promise((resolve, reject) => {
@@ -50,8 +57,13 @@ export class AppService {
     return new Promise((resolve, reject) => {
       const currentDate = Date.now();
       const fileName = `${props.area}-${currentDate}.csv`;
-      this.createPublicDir();
-      const filePath = path.join(__dirname, '../public', fileName);
+      // this.createPublicDir();
+      // const filePath = path.join(__dirname, '../public', fileName);
+      const filePath = path.join(
+        process.env.FCS_REQUEST ?? '',
+        '../public',
+        fileName,
+      );
 
       const header = Object.keys(props).join(';');
 
@@ -78,13 +90,31 @@ export class AppService {
     });
   }
 
-  async start(props: IStart): Promise<{ message: string }> {
+  async start(props: IStart): Promise<{ message: string; pid: number }> {
     // await this.createJsonFile(props);
+    const isProcessRunning =
+      await this.processService.isProcessRunning('RGBFusion.exe');
+    if (isProcessRunning) {
+      throw new BadRequestException(
+        `Процесс уже запущен. Идут вычисления. Попробуйте позднее.`,
+      );
+    }
 
     try {
       await this.createCsvFile(props);
     } catch (error) {
-      throw new Error(error);
+      throw new BadRequestException('Ошибка при создании файла');
+    }
+
+    try {
+      const proc = await this.processService.launchExe(
+        process.env.FCS_EXE_FILE_PATH || '',
+      );
+      return { message: 'Процесс запущен успешно!', pid: proc };
+    } catch (error) {
+      throw new BadRequestException(
+        'Ошибка запуска файла. Проверьте существование файла.',
+      );
     }
 
     // const currentDate = Date.now();
@@ -106,7 +136,5 @@ export class AppService {
     //     console.log(`Файл ${fileName} создан успешно!`);
     //   }
     // });
-
-    return { message: `Файл fileName создан успешно!` };
   }
 }

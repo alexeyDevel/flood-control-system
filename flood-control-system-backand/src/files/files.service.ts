@@ -6,7 +6,8 @@ import * as fs from 'fs';
 
 @Injectable()
 export class FilesService {
-  private readonly publicDir = path.join(__dirname, '../public');
+  private readonly publicDir =
+    process.env.FCS_RESULT_FILES_PATH || path.join(__dirname, '../public');
 
   getListOfFiles(): string[] {
     if (!fs.existsSync(this.publicDir)) {
