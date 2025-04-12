@@ -23,7 +23,7 @@ export function Header() {
             height={25}
             width="auto"
           /> */}
-          <Typography className={styles.logo}>AILab "POLIGON"</Typography>
+          <Typography className={styles.logo}>AILab "POLYGON"</Typography>
           <HeaderNav />
           {accessToken ? (
             <Avatar src={AvatarIcon} />

@@ -8,6 +8,7 @@ import { Requests } from "./pages/Requests";
 import { OptimizationProjectPage } from "./pages/static/OptimizationProjectPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { GlobalProvider } from "./contexts/GlobalContext";
+import { General } from "./pages/static/General";
 
 // Создаем маршруты с помощью createBrowserRouter
 const router = createBrowserRouter([
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <Main />,
     children: [
+      {
+        path: "/",
+        element: <General />,
+      },
       {
         path: "services/optimization",
         element: <OptimizationProjectPage />,

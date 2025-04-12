@@ -12,7 +12,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.use(
     session({
-      secret: 'secret',
+      secret: 'test-secret-key',
       resave: false,
       saveUninitialized: false,
     }),

@@ -10,7 +10,7 @@ import { $notification } from "./notification";
  * @example
  * addNotificationToQueue({
  *   id: '1',
- *   message: 'Уведомление успешно добавлено!',
+ *   description: 'Уведомление успешно добавлено!',
  *   type: 'success',
  * });
  */

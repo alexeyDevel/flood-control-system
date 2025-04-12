@@ -3,7 +3,7 @@ import ky from "ky";
 // import { authActions } from "src/stores/AuthStore";
 
 export const api = ky.create({
-  prefixUrl: `${import.meta.env.VITE_BACKEND_API_URL}/api/v1`,
+  prefixUrl: `${import.meta.env.VITE_FCS_API_URL}/api/v1`,
   hooks: {
     beforeRequest: [
       (request) => {

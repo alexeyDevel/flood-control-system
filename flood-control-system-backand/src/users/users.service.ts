@@ -17,13 +17,21 @@ export class UsersService {
   ) {}
 
   async createUser(login: string, password: string): Promise<UserDocument> {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    const newUser = new this.userModel({ login, password: hashedPassword });
-    return newUser.save();
+    const existingUser = await this.findUserByLogin(login);
+    if (existingUser) {
+      throw new Error('User with this login already exists');
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new this.userModel({
+      login,
+      password: hashedPassword,
+    });
+    return await newUser.save();
   }
 
   async findUserByLogin(login: string): Promise<UserDocument | null> {
-    return this.userModel.findOne({ login }).exec();
+    return await this.userModel.findOne({ login }).exec();
   }
 }

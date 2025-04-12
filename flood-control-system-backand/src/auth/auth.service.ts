@@ -12,17 +12,18 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(
-    login: string,
-    password: string,
-  ): Promise<{ login: string; _id: string }> {
+  async validateUser(login: string, password: string) {
     const user = await this.usersService.findUserByLogin(login);
-    if (user && (await bcrypt.compare(password, user.password))) {
-      // Убираем пароль из результата
-      return { login: user.login, _id: user._id as string };
+    if (!user) {
+      throw new NotFoundException('User not found');
     }
 
-    throw new NotFoundException('User no found');
+    const isMatch = await bcrypt.compare(password, user.password);
+    console.log(user.password, ' = ', password, isMatch);
+    if (!isMatch) {
+      throw new NotFoundException('Invalid credentials');
+    }
+    return { login: user.login, _id: user._id as string };
   }
 
   async login(user: ILoginCredentials): Promise<LoginResponseDto> {
