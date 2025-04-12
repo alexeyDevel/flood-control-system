@@ -92,19 +92,20 @@ export class AppService {
 
   async start(props: IStart): Promise<{ message: string; pid: number }> {
     // await this.createJsonFile(props);
-    const isProcessRunning =
-      await this.processService.isProcessRunning('RGBFusion.exe');
+    const isProcessRunning = await this.processService.isProcessRunning(
+      process.env.FCS_PROCESS_NAME || '',
+    );
     if (isProcessRunning) {
       throw new BadRequestException(
-        `Процесс уже запущен. Идут вычисления. Попробуйте позднее.`,
+        `Процесс уже запущен. Идут вычисления. Повторите попытку позднее.`,
       );
     }
 
-    try {
-      await this.createCsvFile(props);
-    } catch (error) {
-      throw new BadRequestException('Ошибка при создании файла');
-    }
+    // try {
+    //   await this.createCsvFile(props);
+    // } catch (error) {
+    //   throw new BadRequestException('Ошибка при создании файла');
+    // }
 
     try {
       const proc = await this.processService.launchExe(
