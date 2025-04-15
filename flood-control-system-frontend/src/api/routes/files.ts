@@ -1,6 +1,7 @@
 import { api } from "../config";
+import { TFileList } from "./types";
 
-export const getFiles = async (): Promise<string[]> => {
+export const getFiles = async (): Promise<TFileList[]> => {
   return await api.get("files").json();
 };
 

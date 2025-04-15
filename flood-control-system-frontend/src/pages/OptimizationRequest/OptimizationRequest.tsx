@@ -3,80 +3,16 @@ import {
   Button,
   Container,
   FormControl,
-  // SelectChangeEvent,
   TextField,
   Autocomplete,
 } from "@mui/material";
-import { useState } from "react";
 import { FIELD, STRATS, NGDU, AREA_LIST } from "./OptimizationRequest.const";
-import { Link, useNavigate } from "react-router";
-import { IStart, start } from "src/api/app/app";
-import { pushNotification } from "src/stores/notification";
+import { Link } from "react-router";
+
+import { useOptimizationRequest } from "./useOptimizationRequest.hook";
 
 export const OptimizationRequest = () => {
-  const [formData, setFormData] = useState<IStart>({
-    ngdu: "",
-    field: "",
-    area: "",
-    bl: "",
-    strat: "",
-  });
-
-  const navigate = useNavigate();
-
-  // const handleChange = (event: SelectChangeEvent<string>) => {
-  //   const { name, value } = event.target;
-  //   setFormData((prevState) => ({
-  //     ...prevState,
-  //     [name]: value,
-  //   }));
-  // };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    start({
-      ngdu: formData.ngdu,
-      field: formData.field,
-      area: formData.area,
-      bl: formData.bl,
-      strat: formData.strat,
-    })
-      .then(() => {
-        pushNotification({
-          title: "Запрос успешно отправлен!",
-          variant: "success",
-        });
-        navigate("/services/optimization/requests");
-      })
-      .catch(async (error) => {
-        try {
-          const errorResponse = await error.response.json();
-
-          // Выводим все сообщения об ошибках через уведомление
-          if (errorResponse.message && Array.isArray(errorResponse.message)) {
-            pushNotification({
-              title: `Ошибка`,
-              description: errorResponse.message.join(", "),
-              variant: "error",
-            });
-          } else {
-            pushNotification({
-              title: `Ошибка`,
-              description: errorResponse.message || "Неизвестная ошибка",
-              variant: "error",
-            });
-          }
-        } catch (parseError) {
-          // Если не удалось распарсить ответ
-          console.error("Failed to parse error response:", parseError);
-          pushNotification({
-            title: "Ошибка",
-            description: "Произошла неизвестная ошибка",
-            variant: "error",
-          });
-        }
-      });
-  };
+  const { handleSubmit, setFormData, formData } = useOptimizationRequest();
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>

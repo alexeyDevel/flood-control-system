@@ -38,7 +38,7 @@ export const useNotification = (): TUseNotificationReturn => {
         </Box>
       ),
 
-      duration: 2,
+      duration: 5,
       className: styles.notification,
       icon: <img src={variantImage} alt="success" width={22} height={22} />,
       onClick: onClose,

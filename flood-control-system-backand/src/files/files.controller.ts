@@ -1,21 +1,10 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Res, UseGuards } from '@nestjs/common';
 import { FilesService } from './files.service';
-import { CreateFileDto } from './dto/create-file.dto';
-import { UpdateFileDto } from './dto/update-file.dto';
 import * as path from 'path';
 import * as fs from 'fs';
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { TFileList } from './files.type';
 
 @Controller('files')
 export class FilesController {
@@ -23,8 +12,8 @@ export class FilesController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  getFiles(): string[] {
-    return this.filesService.getListOfFiles();
+  async getFiles(): Promise<TFileList[]> {
+    return await this.filesService.getListOfFiles();
   }
 
   @UseGuards(JwtAuthGuard)

@@ -1,4 +1,5 @@
 import ky from "ky";
+import { authActions } from "src/stores/auth";
 // import { refreshToken } from "./routes/auth";
 // import { authActions } from "src/stores/AuthStore";
 
@@ -27,19 +28,18 @@ export const api = ky.create({
             window.location.href = "/accessDenied";
             console.log(403);
             break;
-            // case 401:
-            //   refreshToken({
-            //     refresh: localStorage.getItem("refreshToken") || "",
+          case 401:
+            // refreshToken({
+            //   refresh: localStorage.getItem("refreshToken") || "",
+            // })
+            //   .then((res) => {
+            //     authActions.setTokens(res);
+            //     window.location.reload();
             //   })
-            //     .then((res) => {
-            //       authActions.setTokens(res);
-            //       window.location.reload();
-            //     })
-            //     .catch(() => {
-            //       authActions.reset();
-            //       window.location.href = "/login";
-            //     });
-            console.log(401);
+            //   .catch(() => {
+            authActions.reset();
+            window.location.href = "/login";
+            // });
             break;
           default:
             break;

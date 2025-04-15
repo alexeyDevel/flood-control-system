@@ -2,23 +2,23 @@ import { IsString, IsNotEmpty } from 'class-validator';
 import { IStart } from './app.type';
 
 export class StartDto implements IStart {
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: `"НГДУ" должно быть строкой` })
+  @IsNotEmpty({ message: `"НГДУ" не может быть пустым` })
   ngdu: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: `"Месторождение" должно быть строкой` })
+  @IsNotEmpty({ message: `"Месторождение" не может быть пустым` })
   field: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: `"Участок" должна быть строкой` })
+  @IsNotEmpty({ message: `"Участок" не может быть пустым` })
   area: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: `"Блок" должно быть строкой` })
+  @IsNotEmpty({ message: `"Блок" не может быть пустым` })
   bl: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: `"Горизонт" должна быть строкой` })
+  @IsNotEmpty({ message: `"Горизонт" не может быть пустым` })
   strat: string;
 }

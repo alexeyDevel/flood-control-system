@@ -5,7 +5,6 @@ import { TTokens } from "./auth.type";
 
 const fetchlogin = async (loginData: ICredentialsDto) => {
   try {
-    console.log("sssssssssss");
     $auth.setKey("waitingAuth", true);
     const authData = await fetchLoginUser(loginData);
     setTokens({
