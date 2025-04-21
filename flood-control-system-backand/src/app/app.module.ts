@@ -11,11 +11,13 @@ import { FilesModule } from 'src/files/files.module';
 import * as process from 'process';
 import * as dotenv from 'dotenv';
 import { ProcessService } from './services/process.service';
+import { TasksModule } from 'src/tasks/tasks.module';
 
 dotenv.config();
 
 @Module({
   imports: [
+    TasksModule,
     FilesModule,
     UsersModule,
     PassportModule,

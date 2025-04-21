@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserDocument } from './users.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
 export type TUser = {
@@ -33,5 +33,12 @@ export class UsersService {
 
   async findUserByLogin(login: string): Promise<UserDocument | null> {
     return await this.userModel.findOne({ login }).exec();
+  }
+
+  async findUserById(_id: string): Promise<UserDocument | null> {
+    if (!Types.ObjectId.isValid(_id)) {
+      return null;
+    }
+    return await this.userModel.findById(_id).exec();
   }
 }

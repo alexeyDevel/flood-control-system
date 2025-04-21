@@ -14,7 +14,7 @@ export const OptimizationProjectPage = () => {
         }}
       >
         <Link to="/services/optimization/requests">
-          <Button variant="contained">Мои запросы</Button>
+          <Button variant="contained">Результаты запросов</Button>
         </Link>
 
         <Link to="/services/optimization/create-request">

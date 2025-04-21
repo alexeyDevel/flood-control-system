@@ -55,23 +55,14 @@ export class AppService {
 
   async createCsvFile(props: IStart): Promise<{ message: string }> {
     return new Promise((resolve, reject) => {
-      const currentDate = Date.now();
-      const fileName = `${props.area}-${currentDate}.csv`;
-      // this.createPublicDir();
-      // const filePath = path.join(__dirname, '../public', fileName);
-      const filePath = path.join(
-        process.env.FCS_REQUEST ?? '',
-        '../public',
-        fileName,
-      );
+      const fileName = `/sql.csv`;
+      const filePath = path.join(process.env.FCS_REQUEST ?? '', fileName);
 
       const header = Object.keys(props).join(';');
 
       const values = Object.values(props)
         .map((value) => {
-          // Escape double quotes within the value
           const escapedValue = String(value).replace(/"/g, '""');
-          // Enclose each value in double quotes
           return `"${escapedValue}"`;
         })
         .join(';');
@@ -101,11 +92,11 @@ export class AppService {
       );
     }
 
-    // try {
-    //   await this.createCsvFile(props);
-    // } catch (error) {
-    //   throw new BadRequestException('Ошибка при создании файла');
-    // }
+    try {
+      await this.createCsvFile(props);
+    } catch (error) {
+      throw new BadRequestException('Ошибка при создании файла');
+    }
 
     try {
       const proc = await this.processService.launchExe(

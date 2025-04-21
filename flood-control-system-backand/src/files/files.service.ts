@@ -23,8 +23,8 @@ export class FilesService {
         return {
           fullname: fileName,
           name: fileNameSplitted[0],
-          createdAt: stats.birthtime,
-          requestDate: fileNameSplitted[1].split('.')[0],
+          createdAt: stats.mtime,
+          requestDate: stats.birthtime,
         };
       }),
     );

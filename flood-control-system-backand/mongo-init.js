@@ -1,6 +1,7 @@
 db = db.getSiblingDB('flood-control'); // Подключаемся к базе данных flood-control
 
 db.createCollection('users'); // Создаем коллекцию 'users'
+db.createCollection('tasks');
 // const createUser = async (login, password) => {
 //   try {
 //     const response = await fetch('/users/register', {

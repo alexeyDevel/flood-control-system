@@ -12,7 +12,7 @@ import {
   Button,
   Container,
 } from "@mui/material";
-import { CheckCircle, Error, Pending, Refresh } from "@mui/icons-material";
+import { CheckCircle, Error, Refresh } from "@mui/icons-material";
 import { Link } from "react-router";
 import { useStore } from "@nanostores/react";
 import { $files } from "src/stores/files/files";
@@ -20,18 +20,12 @@ import { filesActions } from "src/stores/files/files.actions";
 import { downloadFile } from "src/api";
 // import styles from "./Requests.module.scss";
 
-interface IRequest {
-  name: string;
-  status: "success" | "error" | "pending";
-  startTime: string;
-  endTime: string;
-}
-
-const requests: IRequest[] = [
-  { name: "Запрос 1", status: "success", startTime: "10:00", endTime: "10:05" },
-  { name: "Запрос 2", status: "error", startTime: "10:10", endTime: "10:15" },
-  { name: "Запрос 3", status: "pending", startTime: "10:20", endTime: "" },
-];
+// interface IRequest {
+//   name: string;
+//   status: "success" | "error" | "pending";
+//   startTime: string;
+//   endTime: string;
+// }
 
 // const ITEMS_PER_PAGE = 5;
 
@@ -102,22 +96,18 @@ export const Requests = () => {
                   {request.name}
                 </TableCell>
                 <TableCell align="right">
-                  {requests[0].status === "success" ? (
-                    <IconButton>
-                      <CheckCircle color="success" />
-                    </IconButton>
-                  ) : requests[0].status === "error" ? (
+                  {request.name.includes("error") ? (
                     <IconButton>
                       <Error color="error" />
                     </IconButton>
                   ) : (
                     <IconButton>
-                      <Pending color="warning" />
+                      <CheckCircle color="success" />
                     </IconButton>
                   )}
                 </TableCell>
                 <TableCell align="right">
-                  {new Date(Number(request.requestDate)).toLocaleString()}
+                  {new Date(request.requestDate).toLocaleString()}
                 </TableCell>
                 <TableCell align="right">
                   {new Date(request.createdAt).toLocaleString()}
