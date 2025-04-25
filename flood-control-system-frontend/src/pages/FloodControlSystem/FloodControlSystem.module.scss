@@ -1,0 +1,20 @@
+.container {
+  .sidebar {
+    max-width: 250px;
+    padding: 2rem;
+    gap: 1rem;
+    border: 1px solid #00b274;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+
+    a {
+      color: gray;
+      transition: color 0.5s ease;
+    }
+
+    a.active {
+      color: #00b274;
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import { api } from "../config";
 
-export interface IStart {
+export interface IOptimize {
   ngdu: string;
   field: string;
   area: string;
@@ -8,9 +8,11 @@ export interface IStart {
   strat: string;
 }
 
-export const start = async (params: IStart): Promise<{ message: string }> => {
+export const optimize = async (
+  params: IOptimize
+): Promise<{ message: string; pid: string }> => {
   return await api
-    .post("app/start", {
+    .post("app/optimize", {
       json: params,
     })
     .json();

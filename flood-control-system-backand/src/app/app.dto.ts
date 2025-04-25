@@ -1,7 +1,7 @@
 import { IsString, IsNotEmpty } from 'class-validator';
 import { IStart } from './app.type';
 
-export class StartDto implements IStart {
+export class StartDto implements Omit<IStart, 'userId'> {
   @IsString({ message: `"НГДУ" должно быть строкой` })
   @IsNotEmpty({ message: `"НГДУ" не может быть пустым` })
   ngdu: string;

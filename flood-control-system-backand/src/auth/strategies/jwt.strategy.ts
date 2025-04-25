@@ -1,7 +1,7 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
-import { TUser } from 'src/users/users.service';
+import { UserDocument } from 'src/users/users.schema';
 
 const extractJwtAndLog = () => {
   return (req: Request): string | null => {
@@ -23,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(payload: TUser) {
-    return { userId: payload.userId, login: payload.login };
+  validate(payload: { id: string; login: string }) {
+    return { userId: payload.id, login: payload.login };
   }
 }

@@ -3,7 +3,7 @@ import { FilesService } from './files.service';
 import * as path from 'path';
 import * as fs from 'fs';
 import { Response } from 'express';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { TFileList } from './files.type';
 
 @Controller('files')

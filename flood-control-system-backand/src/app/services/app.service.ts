@@ -81,7 +81,7 @@ export class AppService {
     });
   }
 
-  async start(props: IStart): Promise<{ message: string; pid: number }> {
+  async optimize(props: IStart): Promise<{ message: string; pid: number }> {
     // await this.createJsonFile(props);
     const isProcessRunning = await this.processService.isProcessRunning(
       process.env.FCS_PROCESS_NAME || '',

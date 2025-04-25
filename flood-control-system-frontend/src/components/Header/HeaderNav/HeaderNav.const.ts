@@ -29,7 +29,7 @@ export const PAGES: TPage[] = [
     subpages: [
       {
         name: "Оптимизация системы заводнения",
-        path: "/services/optimization",
+        path: "/services/optimization/about",
       },
       {
         name: "Автоматизация процессов РНМ",

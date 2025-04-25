@@ -1,26 +1,9 @@
-import { Box, Button, Container, Paper, Typography } from "@mui/material";
-import { Link } from "react-router";
+import { Box, Paper, Typography } from "@mui/material";
 import mainImg from "assets/static/men.png";
 
 export const OptimizationProjectPage = () => {
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 2,
-        }}
-      >
-        <Link to="/services/optimization/requests">
-          <Button variant="contained">Результаты запросов</Button>
-        </Link>
-
-        <Link to="/services/optimization/create-request">
-          <Button variant="contained">Создать новый запрос</Button>
-        </Link>
-      </Box>
+    <Box>
       <Paper elevation={3} sx={{ padding: 3 }}>
         <img
           src={mainImg}
@@ -88,6 +71,6 @@ export const OptimizationProjectPage = () => {
           </Button>
         </Box> */}
       </Paper>
-    </Container>
+    </Box>
   );
 };

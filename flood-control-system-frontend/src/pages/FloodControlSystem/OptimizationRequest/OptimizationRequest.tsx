@@ -1,13 +1,11 @@
 import {
   Box,
   Button,
-  Container,
   FormControl,
   TextField,
   Autocomplete,
 } from "@mui/material";
 import { FIELD, STRATS, NGDU, AREA_LIST } from "./OptimizationRequest.const";
-import { Link } from "react-router";
 
 import { useOptimizationRequest } from "./useOptimizationRequest.hook";
 
@@ -15,40 +13,24 @@ export const OptimizationRequest = () => {
   const { handleSubmit, setFormData, formData } = useOptimizationRequest();
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 2,
-        }}
-      >
-        <Link to="/services/optimization/requests">
-          <Button variant="contained">Результаты запросов</Button>
-        </Link>
-        <Link to="/services/optimization">
-          <Button variant="contained">О проекте</Button>
-        </Link>
-      </Box>
-      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-        <FormControl fullWidth margin="normal">
-          <Autocomplete
-            options={NGDU}
-            value={formData.ngdu}
-            onChange={(_, newValue) => {
-              setFormData((prevState) => ({
-                ...prevState,
-                ngdu: newValue || "",
-              }));
-            }}
-            renderInput={(params) => (
-              <TextField {...params} label="НГДУ" placeholder="Выберите НГДУ" />
-            )}
-          />
-        </FormControl>
+    <Box>
+      <Box component="form" onSubmit={handleSubmit} noValidate>
+        <Autocomplete
+          style={{ marginBottom: "16px" }}
+          options={NGDU}
+          value={formData.ngdu}
+          onChange={(_, newValue) => {
+            setFormData((prevState) => ({
+              ...prevState,
+              ngdu: newValue || "",
+            }));
+          }}
+          renderInput={(params) => (
+            <TextField {...params} label="НГДУ" placeholder="Выберите НГДУ" />
+          )}
+        />
 
-        <FormControl fullWidth margin="normal">
+        <FormControl fullWidth style={{ marginTop: 0 }}>
           <Autocomplete
             options={FIELD}
             value={formData.field}
@@ -136,6 +118,6 @@ export const OptimizationRequest = () => {
           Отправить
         </Button>
       </Box>
-    </Container>
+    </Box>
   );
 };

@@ -4,12 +4,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
-export type TUser = {
-  userId: string;
-  login: string;
-  password: string;
-};
-
 @Injectable()
 export class UsersService {
   constructor(

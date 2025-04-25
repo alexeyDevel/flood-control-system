@@ -4,4 +4,5 @@ export interface IStart {
   area: string;
   bl: string;
   strat: string;
+  userId: string;
 }

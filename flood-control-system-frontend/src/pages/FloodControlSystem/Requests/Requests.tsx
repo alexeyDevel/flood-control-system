@@ -10,10 +10,8 @@ import {
   TableRow,
   IconButton,
   Button,
-  Container,
 } from "@mui/material";
 import { CheckCircle, Error, Refresh } from "@mui/icons-material";
-import { Link } from "react-router";
 import { useStore } from "@nanostores/react";
 import { $files } from "src/stores/files/files";
 import { filesActions } from "src/stores/files/files.actions";
@@ -47,7 +45,7 @@ export const Requests = () => {
   // };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Box>
       <Box
         sx={{
           display: "flex",
@@ -57,11 +55,6 @@ export const Requests = () => {
         }}
       >
         <Box>
-          <Link to="/services/optimization/create-request">
-            <Button variant="contained" sx={{ mr: 2 }}>
-              Создать новый запрос
-            </Button>
-          </Link>
           <Button
             variant="outlined"
             startIcon={<Refresh />}
@@ -70,10 +63,6 @@ export const Requests = () => {
             Обновить
           </Button>
         </Box>
-
-        <Link to="/services/optimization">
-          <Button variant="contained">О проекте</Button>
-        </Link>
       </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -130,6 +119,6 @@ export const Requests = () => {
           color="primary"
         />
       </Box> */}
-    </Container>
+    </Box>
   );
 };

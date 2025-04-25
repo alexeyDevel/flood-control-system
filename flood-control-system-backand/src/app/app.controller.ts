@@ -1,7 +1,9 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AppService } from './services/app.service';
 import { StartDto } from './app.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { User } from 'src/auth/decorators/user.decorator';
+import { JwtUser } from 'src/auth/jwt-user.type';
 
 @Controller('app')
 export class AppController {
@@ -13,8 +15,11 @@ export class AppController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('start')
-  async start(@Body() start: StartDto): Promise<{ message: string }> {
-    return await this.appService.start(start);
+  @Post('optimize')
+  async optimize(
+    @Body() start: StartDto,
+    @User() user: JwtUser, // Теперь здесь строгая типизация
+  ): Promise<{ message: string; pid: number }> {
+    return await this.appService.optimize({ ...start, userId: user.userId }); // передаём типизированного пользователя
   }
 }

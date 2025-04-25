@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { pushNotification } from "src/stores/notification";
-import { IStart, start } from "src/api/app/app";
+import { IOptimize, optimize } from "src/api/app/app";
 
 export const useOptimizationRequest = () => {
-  const [formData, setFormData] = useState<IStart>({
+  const [formData, setFormData] = useState<IOptimize>({
     ngdu: "",
     field: "",
     area: "",
@@ -16,7 +16,7 @@ export const useOptimizationRequest = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    start({
+    optimize({
       ngdu: formData.ngdu,
       field: formData.field,
       area: formData.area,
