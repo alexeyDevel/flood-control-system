@@ -1,0 +1,201 @@
+.container {
+  padding: 16px;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+
+    .title {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+
+    .actions {
+      display: flex;
+      gap: 20px;
+    }
+  }
+  .clearButton {
+    min-width: 40px;
+    height: 40px;
+    padding: 0;
+  }
+
+  .pagination {
+    margin-top: 20px;
+
+    :global(.MuiPagination-ul) {
+      place-content: center;
+      margin: 0 auto;
+    }
+  }
+}
+
+.toggleFiltersButton {
+  text-transform: none;
+}
+
+.filtersContainer {
+  padding: 12px;
+  margin-bottom: 16px;
+  background-color: #fafafa;
+  border-radius: 4px;
+
+  .filterRow {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+:global(.MuiPaper-elevation) {
+  :global(.MuiFormLabel-root) {
+    border-radius: 5px;
+    padding: 1px;
+    background-color: white;
+  }
+
+  .filterInput {
+    width: 180px;
+
+    & .MuiInputBase-root {
+      height: 40px;
+    }
+  }
+
+  .filterSelect {
+    min-width: 180px;
+    max-width: 240px;
+
+    & .MuiInputBase-root {
+      height: 40px;
+    }
+  }
+
+  .chipContainer {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+}
+
+.tableContainer {
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+  background-color: var(--background-paper);
+
+  &:hover {
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+  }
+  .table {
+    min-width: 650px;
+  }
+
+  .tableHead {
+    background-color: var(--grey-50);
+  }
+
+  .headerCell {
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .tableRow {
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: var(--action-hover);
+    }
+
+    &:last-child td {
+      border-bottom: 0;
+    }
+  }
+
+  .fileNameCell {
+    font-weight: 500;
+  }
+
+  .fileName {
+    font-family: "Roboto Mono", monospace;
+    color: var(--text-primary);
+  }
+
+  .emptyValue {
+    color: var(--text-disabled);
+  }
+
+  .statusCell {
+    padding-right: 16px;
+  }
+
+  .statusWrapper {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .iconButton {
+    padding: 8px;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
+  .statusIcon {
+    font-size: 1.25rem;
+  }
+
+  .spinning {
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .dateCell {
+    color: var(--text-secondary);
+    font-variant-numeric: tabular-nums;
+    padding: 14px 16px;
+  }
+
+  .downloadCell {
+    padding-right: 16px;
+  }
+
+  .downloadButton {
+    text-transform: none;
+    border-radius: 8px;
+    border-width: 1.5px;
+    font-weight: 500;
+
+    &:hover {
+      border-width: 1.5px;
+    }
+  }
+
+  .noFileChip {
+    opacity: 0.6;
+    border-style: dashed;
+    font-size: 0.75rem;
+  }
+}

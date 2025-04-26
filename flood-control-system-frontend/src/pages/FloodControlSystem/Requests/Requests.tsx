@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Box,
   Paper,
@@ -10,115 +10,226 @@ import {
   TableRow,
   IconButton,
   Button,
+  Pagination,
+  Chip,
 } from "@mui/material";
-import { CheckCircle, Error, Refresh } from "@mui/icons-material";
+import {
+  AccessTime as PendingIcon,
+  Cached as ProcessingIcon,
+  CheckCircle as CompletedIcon,
+  Error as FailedIcon,
+  Refresh,
+  FilterAlt,
+  Clear,
+} from "@mui/icons-material";
 import { useStore } from "@nanostores/react";
-import { $files } from "src/stores/files/files";
-import { filesActions } from "src/stores/files/files.actions";
 import { downloadFile } from "src/api";
-// import styles from "./Requests.module.scss";
+import { $tasks, tasksActions } from "src/stores/tasks";
+import { TaskStatus } from "src/api/task/task.type";
+import styles from "./Requests.module.scss";
+import "react-datepicker/dist/react-datepicker.css";
+import { RequestsFilters } from "./RequestsFilters";
+import { IFilters } from "./type";
 
-// interface IRequest {
-//   name: string;
-//   status: "success" | "error" | "pending";
-//   startTime: string;
-//   endTime: string;
-// }
-
-// const ITEMS_PER_PAGE = 5;
+const PAGE_SIZE = 10;
 
 export const Requests = () => {
-  const { fileList } = useStore($files);
-  // const [currentPage, setCurrentPage] = useState(1);
+  const { taskList, totalCount } = useStore($tasks);
+  const [page, setPage] = useState(1);
+  const [filters, setFilters] = useState<IFilters>({});
+  const [showFilters, setShowFilters] = useState(false);
+
+  const loadData = useCallback(() => {
+    const params = {
+      skip: (page - 1) * PAGE_SIZE,
+      limit: PAGE_SIZE,
+      ...filters,
+    };
+    tasksActions.loadTasks(params);
+  }, [filters, page]);
+
   useEffect(() => {
-    filesActions.fetchFileList();
-  }, []);
+    loadData();
+  }, [page, filters, loadData]);
 
   const handleRefresh = () => {
-    filesActions.fetchFileList();
+    loadData();
   };
-  // const handlePageChange = (
-  //   event: React.ChangeEvent<unknown>,
-  //   page: number
-  // ) => {
-  //   setCurrentPage(page);
-  // };
+
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+  };
+
+  const handleFilterChange = <K extends keyof IFilters>(
+    name: K,
+    value: IFilters[K] // Теперь совместим с FilterValue<K>
+  ) => {
+    setFilters((prev) => ({ ...prev, [name]: value }));
+    setPage(1);
+  };
+
+  const clearFilters = () => {
+    setFilters({});
+    setPage(1);
+  };
+
+  const handleDownload = (url: string) => {
+    downloadFile(url);
+  };
 
   return (
-    <Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 2,
-        }}
-      >
-        <Box>
+    <Box className={styles.container}>
+      <Box className={styles.header}>
+        <h2 className={styles.title}>Запросы</h2>
+
+        <Box className={styles.actions}>
+          <Button
+            variant="outlined"
+            startIcon={showFilters ? <Clear /> : <FilterAlt />}
+            onClick={() => setShowFilters(!showFilters)}
+            className={styles.button}
+          >
+            {showFilters ? "Скрыть фильтры" : "Фильтры"}
+          </Button>
           <Button
             variant="outlined"
             startIcon={<Refresh />}
             onClick={handleRefresh}
+            className={styles.button}
           >
             Обновить
           </Button>
         </Box>
       </Box>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
+
+      {showFilters && (
+        <RequestsFilters
+          filters={filters}
+          handleFilterChange={handleFilterChange}
+          clearFilters={clearFilters}
+        />
+      )}
+
+      <TableContainer component={Paper} className={styles.tableContainer}>
+        <Table className={styles.table}>
+          <TableHead className={styles.tableHead}>
             <TableRow>
-              <TableCell>Название</TableCell>
-              <TableCell align="right">Статус</TableCell>
-              <TableCell align="right">Время начала</TableCell>
-              <TableCell align="right">Время завершения</TableCell>
-              <TableCell align="right">Скачать</TableCell>
+              <TableCell className={styles.headerCell}>Название</TableCell>
+              <TableCell align="right" className={styles.headerCell}>
+                Статус
+              </TableCell>
+              <TableCell align="right" className={styles.headerCell}>
+                Время начала
+              </TableCell>
+              <TableCell align="right" className={styles.headerCell}>
+                Время завершения
+              </TableCell>
+              <TableCell align="right" className={styles.headerCell}>
+                Скачать
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {fileList.map((request, index) => (
-              <TableRow
-                key={index}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {request.name}
-                </TableCell>
-                <TableCell align="right">
-                  {request.name.includes("error") ? (
-                    <IconButton>
-                      <Error color="error" />
-                    </IconButton>
+            {taskList.map((task, index) => (
+              <TableRow key={index} className={styles.tableRow}>
+                <TableCell
+                  component="th"
+                  scope="row"
+                  className={styles.fileNameCell}
+                >
+                  {task.resultFileUrl ? (
+                    <span className={styles.fileName}>
+                      {task.resultFileUrl.split("/").pop()}
+                    </span>
                   ) : (
-                    <IconButton>
-                      <CheckCircle color="success" />
-                    </IconButton>
+                    <span className={styles.emptyValue}>-</span>
                   )}
                 </TableCell>
-                <TableCell align="right">
-                  {new Date(request.requestDate).toLocaleString()}
+                <TableCell align="right" className={styles.statusCell}>
+                  <div className={styles.statusWrapper}>
+                    {task.status === TaskStatus.PENDING && (
+                      <IconButton className={styles.iconButton} size="small">
+                        <PendingIcon
+                          color="info"
+                          className={styles.statusIcon}
+                        />
+                      </IconButton>
+                    )}
+                    {task.status === TaskStatus.PROCESSING && (
+                      <IconButton
+                        className={`${styles.iconButton} ${styles.spinning}`}
+                        size="small"
+                      >
+                        <ProcessingIcon
+                          color="primary"
+                          className={styles.statusIcon}
+                        />
+                      </IconButton>
+                    )}
+                    {task.status === TaskStatus.COMPLETED && (
+                      <IconButton className={styles.iconButton} size="small">
+                        <CompletedIcon
+                          color="success"
+                          className={styles.statusIcon}
+                        />
+                      </IconButton>
+                    )}
+                    {task.status === TaskStatus.FAILED && (
+                      <IconButton className={styles.iconButton} size="small">
+                        <FailedIcon
+                          color="error"
+                          className={styles.statusIcon}
+                        />
+                      </IconButton>
+                    )}
+                  </div>
                 </TableCell>
-                <TableCell align="right">
-                  {new Date(request.createdAt).toLocaleString()}
+                <TableCell align="right" className={styles.dateCell}>
+                  {new Date(task.createdAt).toLocaleString()}
                 </TableCell>
-                <TableCell align="right">
-                  <Button onClick={() => downloadFile(request.fullname)}>
-                    Скачать
-                  </Button>
+                <TableCell align="right" className={styles.dateCell}>
+                  {new Date(task.updatedAt).toLocaleString()}
+                </TableCell>
+                <TableCell align="right" className={styles.downloadCell}>
+                  {task.resultFileUrl ? (
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      className={styles.downloadButton}
+                      onClick={() =>
+                        task.resultFileUrl && handleDownload(task.resultFileUrl)
+                      }
+                    >
+                      Скачать
+                    </Button>
+                  ) : (
+                    <Chip
+                      label="Нет файла"
+                      size="small"
+                      variant="outlined"
+                      className={styles.noFileChip}
+                    />
+                  )}
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-      {/* <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+
+      <Box className={styles.pagination}>
         <Pagination
-          count={Math.ceil(fileList.length / ITEMS_PER_PAGE)}
-          page={currentPage}
+          count={Math.ceil(totalCount / PAGE_SIZE)}
+          page={page}
           onChange={handlePageChange}
           color="primary"
+          showFirstButton
+          showLastButton
         />
-      </Box> */}
+      </Box>
     </Box>
   );
 };
