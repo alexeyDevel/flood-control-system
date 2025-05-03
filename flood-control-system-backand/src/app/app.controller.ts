@@ -4,6 +4,7 @@ import { StartDto } from './app.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { User } from 'src/auth/decorators/user.decorator';
 import { JwtUser } from 'src/auth/jwt-user.type';
+import { UploadForecastDto } from './dto/uploadForecast.dto';
 
 @Controller('app')
 export class AppController {
@@ -21,5 +22,11 @@ export class AppController {
     @User() user: JwtUser, // Теперь здесь строгая типизация
   ): Promise<{ message: string; pid: number }> {
     return await this.appService.optimize({ ...start, userId: user.userId }); // передаём типизированного пользователя
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('forecast')
+  async uploadBase64(@Body() dto: UploadForecastDto) {
+    return await this.appService.forecastForOptionsWithLimitations(dto);
   }
 }

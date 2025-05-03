@@ -16,7 +16,7 @@ export const SingIn = () => {
     // Редирект на главную страницу после входа
     authActions
       .fetchlogin({ login: login, password: password })
-      .then(() => navigate("/"));
+      .then(() => navigate(-1));
   };
 
   return (
@@ -39,9 +39,19 @@ export const SingIn = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button className={styles.btn} onClick={handleLogin}>
-          <Typography variant="body1">Войти</Typography>
-        </Button>
+        <Box className={styles.btnWrapper}>
+          <Button className={styles.btn} onClick={handleLogin}>
+            <Typography variant="body1">Войти</Typography>
+          </Button>
+          <Button
+            className={styles.btn}
+            onClick={() => navigate("/")}
+            variant="outlined"
+            sx={{ mt: 2 }}
+          >
+            <Typography variant="body1">На главную</Typography>
+          </Button>
+        </Box>
       </StyledBox>
     </Box>
   );

@@ -1,57 +1,28 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { IStart } from '../app.type';
-import { existsSync, mkdir, writeFile, copyFile } from 'node:fs';
+import {
+  existsSync,
+  mkdir,
+  writeFile,
+  copyFile,
+  mkdirSync,
+  promises,
+} from 'node:fs';
 import * as path from 'node:path';
 import { ProcessService } from './process.service';
 import * as process from 'process';
 import * as dotenv from 'dotenv';
+import { UploadForecastDto } from '../dto/uploadForecast.dto';
 
 dotenv.config();
 
 @Injectable()
 export class AppService {
   constructor(private readonly processService: ProcessService) {}
-
+  private readonly allowedExtensions = ['xlsx', 'xls', 'csv'];
   getHello(): string {
     return 'Hello World!';
   }
-
-  // createPublicDir() {
-  //   if (!existsSync(path.join(__dirname, '../', 'public'))) {
-  //     mkdir(
-  //       path.join(__dirname, '../', 'public'),
-  //       { recursive: true },
-  //       (err) => {
-  //         if (err) {
-  //           console.error('Ошибка создания папки public:', err);
-  //         } else {
-  //           console.log('Папка public создана успешно');
-  //         }
-  //       },
-  //     );
-  //   }
-  // }
-
-  // async createJsonFile(props: IStart): Promise<{ message: string }> {
-  //   return new Promise((resolve, reject) => {
-  //     const currentDate = Date.now();
-  //     const fileName = `${props.area}-${currentDate}.json`;
-  //     this.createPublicDir();
-  //     const filePath = path.join(__dirname, '../public', fileName);
-
-  //     const content = JSON.stringify(props, null, 2);
-
-  //     writeFile(filePath, content, (err) => {
-  //       if (err) {
-  //         console.error(err);
-  //         reject(err); // Reject the promise if an error occurs
-  //       } else {
-  //         console.log(`Файл ${fileName} создан успешно!`);
-  //         resolve({ message: `Файл ${fileName} создан успешно!` });
-  //       }
-  //     });
-  //   });
-  // }
 
   async createCsvFile(props: IStart): Promise<{ message: string }> {
     return new Promise((resolve, reject) => {
@@ -108,25 +79,77 @@ export class AppService {
         'Ошибка запуска файла. Проверьте существование файла.',
       );
     }
+  }
 
-    // const currentDate = Date.now();
-    // const fileName = `${props.name}-${currentDate}.xlsm`;
-    // console.log(__dirname);
-    // this.createPublicDir();
-    // const filePath = path.join(__dirname, '../public', fileName);
-    // const sourceFilePath = path.join(__dirname, '../../files/result.xlsm');
+  private ensureUploadDirectoryExists(uploadDir: string): void {
+    if (!uploadDir) {
+      throw new Error(
+        'Проверьте на существование дирректорию для загрузки файлов',
+      );
+    }
 
-    // if (!existsSync(sourceFilePath)) {
-    //   console.error('Файл result.csv не найден');
-    //   return { message: 'Файл result.csv не найден' };
-    // }
+    if (!existsSync(uploadDir)) {
+      mkdirSync(uploadDir, { recursive: true });
+    }
+  }
 
-    // copyFile(sourceFilePath, filePath, (err) => {
-    //   if (err) {
-    //     console.error(err);
-    //   } else {
-    //     console.log(`Файл ${fileName} создан успешно!`);
-    //   }
-    // });
+  async forecastForOptionsWithLimitations(
+    dto: UploadForecastDto,
+  ): Promise<{ message: string; pid: number }> {
+    // Проверка данных
+    if (!dto.fileData || !dto.fileName) {
+      throw new BadRequestException('File data and name are required');
+    }
+
+    const isProcessRunning = await this.processService.isProcessRunning(
+      process.env.FCS_FORECAST_FOR_OPTIONS_PROCESS || '',
+    );
+    if (isProcessRunning) {
+      throw new BadRequestException(
+        `Процесс уже запущен. Идут вычисления. Повторите попытку позднее.`,
+      );
+    }
+
+    // Проверка расширения
+    const lastDotIndex = dto.fileName.lastIndexOf('.');
+    if (lastDotIndex === -1) {
+      throw new BadRequestException('File has no extension');
+    }
+
+    const fileExtension = dto.fileName.split('.').pop()?.toLowerCase() || '';
+    console.log(fileExtension);
+    if (!this.allowedExtensions.includes(fileExtension)) {
+      throw new BadRequestException(
+        `Invalid file extension. Allowed: ${this.allowedExtensions.join(', ')}`,
+      );
+    }
+
+    // Декодирование base64
+    const buffer = Buffer.from(dto.fileData, 'base64');
+
+    // Генерация уникального имени
+    const uniqueName = `forecast_${Date.now()}.${fileExtension}`;
+    const filePath = path.join(
+      process.env.FCS_FORECAST_FOR_OPTIONS_PUBLIC ?? '',
+      uniqueName,
+    );
+
+    // Сохранение файла
+    try {
+      await promises.writeFile(filePath, buffer);
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+
+    try {
+      const proc = await this.processService.launchExe(
+        process.env.FCS_FORECAST_FOR_OPTIONS_EXE_PATH || '',
+      );
+      return { message: 'Процесс запущен успешно!', pid: proc };
+    } catch (error) {
+      throw new BadRequestException(
+        'Ошибка запуска файла. Проверьте существование файла.',
+      );
+    }
   }
 }

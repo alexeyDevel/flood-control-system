@@ -2,6 +2,7 @@ import { fetchLoginUser, ICredentialsDto } from "src/api";
 import { $auth } from "./auth";
 
 import { TTokens } from "./auth.type";
+import { pushNotification } from "../notification";
 
 const fetchlogin = async (loginData: ICredentialsDto) => {
   try {
@@ -11,9 +12,16 @@ const fetchlogin = async (loginData: ICredentialsDto) => {
       access: authData.access_token,
       refresh: "",
     });
-  } catch (error) {
+    pushNotification({
+      title: "Авторизация успешно пройдена",
+      variant: "success",
+    });
+  } catch {
     //TODO: ADD ERROR HANDLING
-    console.log("error", error);
+    pushNotification({
+      title: "Авторизация неудалось",
+      variant: "error",
+    });
     throw Error();
   }
   $auth.setKey("waitingAuth", false);

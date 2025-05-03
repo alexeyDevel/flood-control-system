@@ -1,64 +1,66 @@
-import React, { useState, useRef, ChangeEvent } from "react";
+import { useState, useRef, ChangeEvent } from "react";
 import {
   Box,
   Typography,
   Button,
-  Alert,
-  Snackbar,
   Stack,
   Input,
   IconButton,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { forecast } from "src/api/app/app";
+import {
+  prepareFileForUpload,
+  validateFileExtension,
+} from "src/utils/fileToBase64";
+import { pushNotification } from "src/stores/notification";
 
 export const ForecastForOptions = () => {
   const [file, setFile] = useState<File | null>(null);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "info" as "info" | "success" | "warning" | "error",
-  });
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleCloseSnackbar = () => {
-    setSnackbar((prev) => ({ ...prev, open: false }));
-  };
+  const ALLOWED_EXTENSIONS = [".xlsx", ".xls", ".csv"];
+  const MAX_FILE_SIZE_MB = 2;
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (!selectedFile) return;
 
-    // Проверка типа файла
-    const validTypes = [
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      "application/vnd.ms-excel",
-    ];
-    if (!validTypes.includes(selectedFile.type)) {
-      setSnackbar({
-        open: true,
-        message: "Пожалуйста, загрузите файл в формате XLSX",
-        severity: "error",
-      });
-      return;
-    }
+    try {
+      // 1. Проверка расширения файла
+      if (!validateFileExtension(selectedFile.name, ALLOWED_EXTENSIONS)) {
+        throw new Error(
+          `Недопустимый формат файла. Разрешены: ${ALLOWED_EXTENSIONS.join(
+            ", "
+          )}`
+        );
+      }
 
-    // Проверка размера файла (2 МБ)
-    if (selectedFile.size > 2 * 1024 * 1024) {
-      setSnackbar({
-        open: true,
-        message: "Файл слишком большой (максимум 2 МБ)",
-        severity: "error",
-      });
-      return;
-    }
+      // 2. Проверка размера файла
+      if (selectedFile.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+        throw new Error(
+          `Файл слишком большой. Максимум: ${MAX_FILE_SIZE_MB}MB`
+        );
+      }
 
-    setFile(selectedFile);
-    setSnackbar({
-      open: true,
-      message: "Файл успешно загружен",
-      severity: "success",
-    });
+      // 3. Успешная загрузка
+      setFile(selectedFile);
+      pushNotification({
+        variant: "success",
+        title: "Файл успешно загружен",
+      });
+    } catch (error) {
+      pushNotification({
+        variant: "error",
+        title:
+          error instanceof Error ? error.message : "Ошибка при загрузке файла",
+      });
+
+      // Сбрасываем значение input, чтобы можно было повторно выбрать тот же файл после ошибки
+      event.target.value = "";
+    }
   };
 
   const handleRemoveFile = () => {
@@ -68,23 +70,34 @@ export const ForecastForOptions = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!file) {
-      setSnackbar({
-        open: true,
-        message: "Пожалуйста, загрузите файл",
-        severity: "warning",
+      pushNotification({
+        variant: "warning",
+        title: "Пожалуйста, загрузите файл",
       });
       return;
     }
+    try {
+      const base64 = await prepareFileForUpload(file, {
+        allowedExtensions: [".xlsx", ".xls", ".csv"],
+        maxSizeMB: 5,
+      });
+      const result = await forecast({
+        fileName: file.name,
+        fileData: base64.data,
+      });
 
-    // Здесь можно добавить логику отправки файла на сервер
-    console.log("Отправка файла:", file.name);
-    setSnackbar({
-      open: true,
-      message: "Файл отправлен на обработку",
-      severity: "success",
-    });
+      pushNotification({
+        variant: "success",
+        title: result.message,
+      });
+    } catch {
+      pushNotification({
+        variant: "error",
+        title: "Ошибка отправки файла.",
+      });
+    }
   };
 
   return (
@@ -153,20 +166,6 @@ export const ForecastForOptions = () => {
           Отправить файл
         </Button>
       </Stack>
-
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-      >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity={snackbar.severity}
-          sx={{ width: "100%" }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
     </Box>
   );
 };
