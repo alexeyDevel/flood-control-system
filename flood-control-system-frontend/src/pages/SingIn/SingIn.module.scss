@@ -15,8 +15,14 @@
     gap: 1rem;
     margin: 0 auto;
 
-    .btn {
-      margin-top: 2rem;
+    .btnWrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .btn {
+        margin-top: 2rem;
+      }
     }
   }
 }

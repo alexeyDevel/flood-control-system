@@ -19,6 +19,7 @@ import styles from "./Requests.module.scss";
 import { TaskStatus, TaskType } from "src/api/task/task.type";
 import { ICompactFiltersProps } from "./type";
 import { ru } from "date-fns/locale/ru";
+import { TASK_STATUS_MAP, TASK_TYPE_MAP } from "src/api/task/task.const";
 registerLocale("ru", ru);
 
 export const RequestsFilters: React.FC<ICompactFiltersProps> = ({
@@ -68,7 +69,11 @@ export const RequestsFilters: React.FC<ICompactFiltersProps> = ({
             renderValue={(selected) => (
               <div className={styles.chipContainer}>
                 {(selected as TaskStatus[]).map((value) => (
-                  <Chip key={value} label={value} size="small" />
+                  <Chip
+                    key={value}
+                    label={TASK_STATUS_MAP[value] || value}
+                    size="small"
+                  />
                 ))}
               </div>
             )}
@@ -76,7 +81,7 @@ export const RequestsFilters: React.FC<ICompactFiltersProps> = ({
             {Object.values(TaskStatus).map((status) => (
               <MenuItem key={status} value={status}>
                 <Checkbox checked={(filters.status || []).includes(status)} />
-                <ListItemText primary={status} />
+                <ListItemText primary={TASK_STATUS_MAP[status] || status} />
               </MenuItem>
             ))}
           </Select>
@@ -92,7 +97,11 @@ export const RequestsFilters: React.FC<ICompactFiltersProps> = ({
             renderValue={(selected) => (
               <div className={styles.chipContainer}>
                 {(selected as TaskType[]).map((value) => (
-                  <Chip key={value} label={value} size="small" />
+                  <Chip
+                    key={value}
+                    label={TASK_TYPE_MAP[value] || value}
+                    size="small"
+                  />
                 ))}
               </div>
             )}
@@ -100,7 +109,7 @@ export const RequestsFilters: React.FC<ICompactFiltersProps> = ({
             {Object.values(TaskType).map((type) => (
               <MenuItem key={type} value={type}>
                 <Checkbox checked={(filters.taskType || []).includes(type)} />
-                <ListItemText primary={type} />
+                <ListItemText primary={TASK_TYPE_MAP[type] || type} />
               </MenuItem>
             ))}
           </Select>

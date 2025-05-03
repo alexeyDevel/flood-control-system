@@ -23,7 +23,11 @@
     height: 40px;
     padding: 0;
   }
-
+  .ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
   .pagination {
     margin-top: 20px;
 

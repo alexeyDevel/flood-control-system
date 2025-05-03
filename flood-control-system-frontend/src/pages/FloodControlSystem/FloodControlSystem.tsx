@@ -43,7 +43,7 @@ export const FloodControlSystem = () => {
           </NavLink>
         </nav>
       </Grid2>
-      <Grid2 size={6}>
+      <Grid2 size={8}>
         <Box style={{ padding: "0 24px 24px" }}>
           <Outlet />
         </Box>

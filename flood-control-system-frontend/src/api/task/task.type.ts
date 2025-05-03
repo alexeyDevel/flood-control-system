@@ -1,5 +1,6 @@
 export enum TaskType {
   FLOODING_AUTOMATION = "flooding_automation",
+  FORECAST_FOR_OPTIONS = "forecast_for_otions",
 }
 export enum TaskStatus {
   PENDING = "pending",

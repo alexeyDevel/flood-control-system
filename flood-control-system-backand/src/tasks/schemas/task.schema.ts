@@ -12,6 +12,7 @@ export enum TaskStatus {
 // Перечисление типов задач (пока только один)
 export enum TaskType {
   FLOODING_AUTOMATION = 'flooding_automation', // автоматизация заводнения
+  FORECAST_FOR_OPTIONS = 'forecast_for_otions', // автоматизация заводнения
   // Можно добавить другие типы в будущем, например:
   // DATA_EXPORT = 'data_export',
   // REPORT_GENERATION = 'report_generation',

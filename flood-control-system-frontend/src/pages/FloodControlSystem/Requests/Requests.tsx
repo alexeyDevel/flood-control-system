@@ -12,6 +12,7 @@ import {
   Button,
   Pagination,
   Chip,
+  Tooltip,
 } from "@mui/material";
 import {
   AccessTime as PendingIcon,
@@ -125,7 +126,7 @@ export const Requests = () => {
                 Время начала
               </TableCell>
               <TableCell align="right" className={styles.headerCell}>
-                Время завершения
+                Время последнего обновления
               </TableCell>
               <TableCell align="right" className={styles.headerCell}>
                 Скачать
@@ -139,14 +140,17 @@ export const Requests = () => {
                   component="th"
                   scope="row"
                   className={styles.fileNameCell}
+                  sx={{ overflow: "hidden" }}
                 >
-                  {task.resultFileUrl ? (
-                    <span className={styles.fileName}>
-                      {task.resultFileUrl.split("/").pop()}
-                    </span>
-                  ) : (
-                    <span className={styles.emptyValue}>-</span>
-                  )}
+                  <Tooltip title={task?.resultFileUrl?.split("/").pop() || ""}>
+                    {task.resultFileUrl ? (
+                      <span className={`${styles.fileName} ${styles.ellipsis}`}>
+                        {task.resultFileUrl.split("/").pop()}
+                      </span>
+                    ) : (
+                      <span className={styles.emptyValue}>-</span>
+                    )}
+                  </Tooltip>
                 </TableCell>
                 <TableCell align="right" className={styles.statusCell}>
                   <div className={styles.statusWrapper}>
