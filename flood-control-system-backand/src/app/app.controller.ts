@@ -26,7 +26,10 @@ export class AppController {
 
   @UseGuards(JwtAuthGuard)
   @Post('forecast')
-  async uploadBase64(@Body() dto: UploadForecastDto) {
-    return await this.appService.forecastForOptionsWithLimitations(dto);
+  async uploadBase64(@Body() dto: UploadForecastDto, @User() user: JwtUser) {
+    return await this.appService.forecastForOptionsWithLimitations({
+      dto,
+      userId: user.userId,
+    });
   }
 }

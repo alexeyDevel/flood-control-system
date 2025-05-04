@@ -24,14 +24,19 @@ export class AppService {
     return 'Hello World!';
   }
 
-  async createCsvFile(props: IStart): Promise<{ message: string }> {
+  async createCsvFile<T extends Record<string, any>>({
+    fields,
+    fileName,
+    savePath,
+  }: {
+    fields: T;
+    fileName: string;
+    savePath: string;
+  }): Promise<{ message: string }> {
     return new Promise((resolve, reject) => {
-      const fileName = `/sql.csv`;
-      const filePath = path.join(process.env.FCS_REQUEST ?? '', fileName);
-
-      const header = Object.keys(props).join(';');
-
-      const values = Object.values(props)
+      const header = Object.keys(fields).join(';');
+      const filePath = path.join(savePath, fileName, '/');
+      const values = Object.values(fields)
         .map((value) => {
           const escapedValue = String(value).replace(/"/g, '""');
           return `"${escapedValue}"`;
@@ -64,7 +69,12 @@ export class AppService {
     }
 
     try {
-      await this.createCsvFile(props);
+      const savePath = path.join(process.env.FCS_REQUEST ?? '');
+      await this.createCsvFile({
+        fields: props,
+        fileName: `sql.csv`,
+        savePath,
+      });
     } catch (error) {
       throw new BadRequestException('Ошибка при создании файла');
     }
@@ -93,9 +103,13 @@ export class AppService {
     }
   }
 
-  async forecastForOptionsWithLimitations(
-    dto: UploadForecastDto,
-  ): Promise<{ message: string; pid: number }> {
+  async forecastForOptionsWithLimitations({
+    dto,
+    userId,
+  }: {
+    dto: UploadForecastDto;
+    userId: string;
+  }): Promise<{ message: string; pid: number }> {
     // Проверка данных
     if (!dto.fileData || !dto.fileName) {
       throw new BadRequestException('File data and name are required');
@@ -133,6 +147,19 @@ export class AppService {
       process.env.FCS_FORECAST_FOR_OPTIONS_PUBLIC ?? '',
       uniqueName,
     );
+
+    try {
+      const savePath = path.join(
+        process.env.FCS_FORECAST_FOR_OPTIONS_PUBLIC ?? '',
+      );
+      await this.createCsvFile({
+        fields: { userId: userId, fileid: uniqueName },
+        fileName: `input.csv`,
+        savePath,
+      });
+    } catch (error) {
+      throw new BadRequestException('Ошибка при создании файла');
+    }
 
     // Сохранение файла
     try {

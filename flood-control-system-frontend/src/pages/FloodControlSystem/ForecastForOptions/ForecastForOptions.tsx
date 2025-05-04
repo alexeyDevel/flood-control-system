@@ -49,7 +49,7 @@ export const ForecastForOptions = () => {
       setFile(selectedFile);
       pushNotification({
         variant: "success",
-        title: "Файл успешно загружен",
+        title: "Файл готов к отправке.",
       });
     } catch (error) {
       pushNotification({
