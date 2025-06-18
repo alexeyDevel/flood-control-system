@@ -3,6 +3,7 @@ import { AppModule } from './app/app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as session from 'express-session';
 import * as dotenv from 'dotenv';
+import { json, urlencoded } from 'express';
 
 // Загружаем переменные окружения из .env файла
 dotenv.config();
@@ -19,6 +20,9 @@ async function bootstrap() {
   );
   app.setGlobalPrefix('/api/v1');
   app.enableCors();
+
+  app.use(json({ limit: '5mb' }));
+  app.use(urlencoded({ extended: true, limit: '5mb', parameterLimit: 100000 }));
   await app.listen(process.env.PORT ?? 2040);
 }
 bootstrap();

@@ -27,7 +27,7 @@ export class UpdateTaskDto extends PartialType(CreateTaskDto) {
   progress?: number; // Прогресс (0-100)
 
   @IsOptional()
-  @IsUrl()
+  @IsString()
   resultFileUrl?: string; // Ссылка на файл (валидация URL)
 
   @IsOptional()

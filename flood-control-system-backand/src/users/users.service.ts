@@ -33,6 +33,6 @@ export class UsersService {
     if (!Types.ObjectId.isValid(_id)) {
       return null;
     }
-    return await this.userModel.findById(_id).exec();
+    return await this.userModel.findById(_id).select('-password').exec();
   }
 }
