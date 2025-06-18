@@ -78,7 +78,7 @@ export const Requests = () => {
   };
 
   const handleDownload = (url: string) => {
-    downloadFile(url);
+    downloadFile(url.replace("/", ""));
   };
 
   return (
@@ -118,7 +118,9 @@ export const Requests = () => {
         <Table className={styles.table}>
           <TableHead className={styles.tableHead}>
             <TableRow>
-              <TableCell className={styles.headerCell}>Название</TableCell>
+              <TableCell className={styles.headerCell}>
+                <Box sx={{ maxWidth: "180px" }}>Название</Box>
+              </TableCell>
               <TableCell align="right" className={styles.headerCell}>
                 Статус
               </TableCell>
@@ -140,17 +142,29 @@ export const Requests = () => {
                   component="th"
                   scope="row"
                   className={styles.fileNameCell}
-                  sx={{ overflow: "hidden" }}
                 >
-                  <Tooltip title={task?.resultFileUrl?.split("/").pop() || ""}>
-                    {task.resultFileUrl ? (
-                      <span className={`${styles.fileName} ${styles.ellipsis}`}>
-                        {task.resultFileUrl.split("/").pop()}
-                      </span>
-                    ) : (
-                      <span className={styles.emptyValue}>-</span>
-                    )}
-                  </Tooltip>
+                  <Box
+                    sx={{
+                      maxWidth: "180px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    <Tooltip
+                      title={task?.resultFileUrl?.split("/").pop() || ""}
+                    >
+                      {task.resultFileUrl ? (
+                        <span
+                          className={`${styles.fileName} ${styles.ellipsis}`}
+                        >
+                          {task.resultFileUrl.split("/").pop()}
+                        </span>
+                      ) : (
+                        <span className={styles.emptyValue}>-</span>
+                      )}
+                    </Tooltip>
+                  </Box>
                 </TableCell>
                 <TableCell align="right" className={styles.statusCell}>
                   <div className={styles.statusWrapper}>

@@ -10,9 +10,11 @@ import { $auth, authActions } from "src/stores/auth";
 import { Link } from "react-router";
 
 import { useState } from "react";
+import { $user } from "src/stores/user/user";
 
 export function Header() {
   const { accessToken } = useStore($auth);
+  const { user } = useStore($user);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -34,7 +36,7 @@ export function Header() {
         <Toolbar disableGutters>
           <Typography className={styles.logo}>AILab "POLYGON"</Typography>
           <HeaderNav />
-          {accessToken ? (
+          {accessToken && user?.login ? (
             <>
               <Avatar
                 src={AvatarIcon}

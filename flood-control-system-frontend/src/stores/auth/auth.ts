@@ -9,8 +9,5 @@ onMount($auth, () => {
   const accessToken = localStorage.getItem("accessToken");
   if (accessToken) {
     authActions.setTokens({ refresh: "", access: accessToken });
-    // task(async () => {
-    //   $post.set(await loadPost());
-    // });
   }
 });
