@@ -11,6 +11,12 @@ import { GlobalProvider } from "./contexts/GlobalContext";
 import { General } from "./pages/static/General";
 import { FloodControlSystem } from "./pages/FloodControlSystem/FloodControlSystem";
 import { ForecastForOptions } from "./pages/FloodControlSystem/ForecastForOptions";
+import { useEffect } from "react";
+import { fetchUserData } from "./stores/user/user.action";
+import { $user } from "src/stores/user/user";
+import { useStore } from "@nanostores/react";
+import { $auth } from "./stores/auth";
+import { InfluenceOfWells } from "./pages/FloodControlSystem/InfluenceOfWells";
 
 // Создаем маршруты с помощью createBrowserRouter
 const router = createBrowserRouter([
@@ -51,6 +57,14 @@ const router = createBrowserRouter([
             ),
           },
           {
+            path: "influence",
+            element: (
+              <ProtectedRoute>
+                <InfluenceOfWells />
+              </ProtectedRoute>
+            ),
+          },
+          {
             path: "requests",
             element: (
               <ProtectedRoute>
@@ -73,6 +87,16 @@ const router = createBrowserRouter([
 ]);
 
 export default function App() {
+  const { user } = useStore($user);
+  const { accessToken } = useStore($auth);
+
+  useEffect(() => {
+    if (accessToken && !user) {
+      fetchUserData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accessToken]);
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalProvider>

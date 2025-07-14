@@ -91,6 +91,42 @@ export class AppService {
     }
   }
 
+  async influence(props: IStart): Promise<{ message: string; pid: number }> {
+    // await this.createJsonFile(props);
+    const isProcessRunning = await this.processService.isProcessRunning(
+      process.env.FCS_INFLUENCE_OF_WELLS_PROCESS_NAME || '',
+    );
+    if (isProcessRunning) {
+      throw new BadRequestException(
+        `Процесс уже запущен. Идут вычисления. Повторите попытку позднее.`,
+      );
+    }
+
+    try {
+      const savePath = path.join(
+        process.env.FCS_INFLUENCE_OF_WELLS_PUBLIC ?? '',
+      );
+      await this.createCsvFile({
+        fields: props,
+        fileName: `inf.csv`,
+        savePath,
+      });
+    } catch (error) {
+      throw new BadRequestException('Ошибка при создании файла');
+    }
+
+    try {
+      const proc = await this.processService.launchExe(
+        process.env.FCS_INFLUENCE_OF_WELLS_EXE_PATH || '',
+      );
+      return { message: 'Процесс запущен успешно!', pid: proc };
+    } catch (error) {
+      throw new BadRequestException(
+        'Ошибка запуска файла. Проверьте существование файла.',
+      );
+    }
+  }
+
   private ensureUploadDirectoryExists(uploadDir: string): void {
     if (!uploadDir) {
       throw new Error(
