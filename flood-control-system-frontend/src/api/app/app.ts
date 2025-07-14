@@ -8,6 +8,8 @@ export interface IOptimize {
   strat: string;
 }
 
+export type TNfluence = IOptimize;
+
 export interface IUploadForecast {
   fileName: string;
   fileData: string;
@@ -18,6 +20,16 @@ export const optimize = async (
 ): Promise<{ message: string; pid: string }> => {
   return await api
     .post("app/optimize", {
+      json: params,
+    })
+    .json();
+};
+
+export const influence = async (
+  params: TNfluence
+): Promise<{ message: string; pid: string }> => {
+  return await api
+    .post("app/influence", {
       json: params,
     })
     .json();

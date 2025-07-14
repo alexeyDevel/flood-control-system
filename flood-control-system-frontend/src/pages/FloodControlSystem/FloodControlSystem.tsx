@@ -24,6 +24,14 @@ export const FloodControlSystem = () => {
             <Typography variant="body1">Оптимизация режимов закачки</Typography>
           </NavLink>
           <NavLink
+            to="/services/optimization/influence"
+            className={({ isActive, isPending }) =>
+              isPending ? "pending" : isActive ? styles.active : ""
+            }
+          >
+            <Typography variant="body1">Взаимовлияние скважин</Typography>
+          </NavLink>
+          <NavLink
             to="/services/optimization/forecast-for-options"
             className={({ isActive, isPending }) =>
               isPending ? "pending" : isActive ? styles.active : ""

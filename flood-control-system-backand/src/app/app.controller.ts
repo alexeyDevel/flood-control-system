@@ -19,9 +19,18 @@ export class AppController {
   @Post('optimize')
   async optimize(
     @Body() start: StartDto,
-    @User() user: JwtUser, // Теперь здесь строгая типизация
+    @User() user: JwtUser,
   ): Promise<{ message: string; pid: number }> {
-    return await this.appService.optimize({ ...start, userId: user.userId }); // передаём типизированного пользователя
+    return await this.appService.optimize({ ...start, userId: user.userId });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('influence')
+  async influence(
+    @Body() start: StartDto,
+    @User() user: JwtUser,
+  ): Promise<{ message: string; pid: number }> {
+    return await this.appService.influence({ ...start, userId: user.userId });
   }
 
   @UseGuards(JwtAuthGuard)

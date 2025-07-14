@@ -28,12 +28,10 @@ const fetchlogin = async (loginData: ICredentialsDto) => {
 };
 
 const setTokens = (tokens: TTokens) => {
-  console.log("tokens");
   $auth.setKey("refreshToken", tokens.refresh);
   $auth.setKey("accessToken", tokens.access);
   localStorage.setItem("refreshToken", tokens.refresh);
   localStorage.setItem("accessToken", tokens.access);
-  console.log("/tokens");
 };
 
 export const setAccessTokenFromStorage = () => {
