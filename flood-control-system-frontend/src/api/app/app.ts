@@ -1,11 +1,17 @@
 import { api } from "../config";
 
+export enum CalculationTypeEnum {
+  LIQUID_PRODUCTION, // "Расчёты по добываемой жидкости",
+  BOTTOMHOLE_PRESSURE, // "Расчёты по забойному давлению"
+}
+
 export interface IOptimize {
   ngdu: string;
   field: string;
   area: string;
   bl: string;
   strat: string;
+  calculationType: CalculationTypeEnum;
 }
 
 export type TNfluence = IOptimize;
