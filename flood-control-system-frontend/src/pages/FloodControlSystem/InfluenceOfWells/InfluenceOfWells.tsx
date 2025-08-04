@@ -4,6 +4,10 @@ import {
   FormControl,
   TextField,
   Autocomplete,
+  FormLabel,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
 } from "@mui/material";
 import {
   NGDU,
@@ -13,7 +17,7 @@ import {
 } from "../OptimizationRequest/OptimizationRequest.const";
 import { sendRequest } from "src/stores/floodControlSystem";
 import { useState } from "react";
-import { TNfluence } from "src/api/app/app";
+import { CalculationTypeEnum, TNfluence } from "src/api/app/app";
 import { useNavigate } from "react-router";
 
 export const InfluenceOfWells = () => {
@@ -24,6 +28,7 @@ export const InfluenceOfWells = () => {
     area: "",
     bl: "",
     strat: "",
+    calculationType: 1,
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -115,7 +120,10 @@ export const InfluenceOfWells = () => {
         {/* Autocomplete для блока */}
         <FormControl fullWidth margin="normal">
           <Autocomplete
-            options={Array.from({ length: 20 }, (_, i) => (i + 1).toString())}
+            options={[
+              ...Array.from({ length: 20 }, (_, i) => (i + 1).toString()),
+              ".",
+            ]}
             value={formData.bl}
             onChange={(_, newValue) => {
               setFormData((prevState) => ({
@@ -127,6 +135,32 @@ export const InfluenceOfWells = () => {
               <TextField {...params} label="Блок" placeholder="Выберите блок" />
             )}
           />
+        </FormControl>
+
+        {/*выбор типа расчётов */}
+        <FormControl component="fieldset" fullWidth margin="normal" required>
+          <FormLabel component="legend">Тип расчётов</FormLabel>
+          <RadioGroup
+            row
+            value={formData.calculationType}
+            onChange={(e) => {
+              setFormData((prevState) => ({
+                ...prevState,
+                calculationType: Number(e.target.value),
+              }));
+            }}
+          >
+            <FormControlLabel
+              value={CalculationTypeEnum.LIQUID_PRODUCTION}
+              control={<Radio />}
+              label="Расчёты по добываемой жидкости"
+            />
+            <FormControlLabel
+              value={CalculationTypeEnum.BOTTOMHOLE_PRESSURE}
+              control={<Radio />}
+              label="Расчёты по забойному давлению"
+            />
+          </RadioGroup>
         </FormControl>
 
         <Button

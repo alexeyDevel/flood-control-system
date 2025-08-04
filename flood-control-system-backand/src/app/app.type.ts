@@ -1,3 +1,7 @@
+export enum CalculationTypeEnum {
+  LIQUID_PRODUCTION, // "Расчёты по добываемой жидкости",
+  BOTTOMHOLE_PRESSURE, // "Расчёты по забойному давлению"
+}
 export interface IStart {
   ngdu: string;
   field: string;
@@ -5,4 +9,5 @@ export interface IStart {
   bl: string;
   strat: string;
   userId: string;
+  calculationType: CalculationTypeEnum;
 }

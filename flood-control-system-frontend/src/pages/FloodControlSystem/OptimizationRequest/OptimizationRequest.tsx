@@ -4,10 +4,15 @@ import {
   FormControl,
   TextField,
   Autocomplete,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
 } from "@mui/material";
 import { FIELD, STRATS, NGDU, AREA_LIST } from "./OptimizationRequest.const";
 
 import { useOptimizationRequest } from "./useOptimizationRequest.hook";
+import { CalculationTypeEnum } from "src/api/app/app";
 
 export const OptimizationRequest = () => {
   const { handleSubmit, setFormData, formData } = useOptimizationRequest();
@@ -94,7 +99,10 @@ export const OptimizationRequest = () => {
         {/* Autocomplete для блока */}
         <FormControl fullWidth margin="normal">
           <Autocomplete
-            options={Array.from({ length: 20 }, (_, i) => (i + 1).toString())}
+            options={[
+              ...Array.from({ length: 20 }, (_, i) => (i + 1).toString()),
+              ".",
+            ]}
             value={formData.bl}
             onChange={(_, newValue) => {
               setFormData((prevState) => ({
@@ -106,6 +114,31 @@ export const OptimizationRequest = () => {
               <TextField {...params} label="Блок" placeholder="Выберите блок" />
             )}
           />
+        </FormControl>
+        {/*выбор типа расчётов */}
+        <FormControl component="fieldset" fullWidth margin="normal" required>
+          <FormLabel component="legend">Тип расчётов</FormLabel>
+          <RadioGroup
+            row
+            value={formData.calculationType}
+            onChange={(e) => {
+              setFormData((prevState) => ({
+                ...prevState,
+                calculationType: Number(e.target.value),
+              }));
+            }}
+          >
+            <FormControlLabel
+              value={CalculationTypeEnum.LIQUID_PRODUCTION}
+              control={<Radio />}
+              label="Расчёты по добываемой жидкости"
+            />
+            <FormControlLabel
+              value={CalculationTypeEnum.BOTTOMHOLE_PRESSURE}
+              control={<Radio />}
+              label="Расчёты по забойному давлению"
+            />
+          </RadioGroup>
         </FormControl>
 
         <Button

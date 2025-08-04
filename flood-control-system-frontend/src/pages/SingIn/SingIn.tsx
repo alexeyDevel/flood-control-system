@@ -16,7 +16,7 @@ export const SingIn = () => {
     // Редирект на главную страницу после входа
     authActions
       .fetchlogin({ login: login, password: password })
-      .then(() => navigate(-1));
+      .then(() => (window.history.length > 2 ? navigate(-1) : navigate("/")));
   };
 
   return (

@@ -186,7 +186,7 @@ export class AppService {
 
     try {
       const savePath = path.join(
-        process.env.FCS_FORECAST_FOR_OPTIONS_PUBLIC ?? '',
+        process.env.FCS_FORECAST_FOR_OPTIONS_SETTINGS ?? '',
       );
       await this.createCsvFile({
         fields: { userId: userId, fileid: uniqueName },

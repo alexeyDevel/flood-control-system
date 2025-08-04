@@ -10,6 +10,7 @@ export const useOptimizationRequest = () => {
     area: "",
     bl: "",
     strat: "",
+    calculationType: 1,
   });
 
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ export const useOptimizationRequest = () => {
       area: formData.area,
       bl: formData.bl,
       strat: formData.strat,
+      calculationType: formData.calculationType,
     })
       .then(() => {
         pushNotification({
