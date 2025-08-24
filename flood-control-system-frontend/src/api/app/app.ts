@@ -12,6 +12,7 @@ export interface IOptimize {
   bl: string;
   strat: string;
   calculationType: CalculationTypeEnum;
+  radius: string;
 }
 
 export type TNfluence = IOptimize;
