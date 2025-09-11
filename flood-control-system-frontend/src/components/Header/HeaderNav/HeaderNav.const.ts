@@ -11,15 +11,15 @@ export const PAGES: TPage[] = [
     subpages: [
       {
         name: "Миссия и цели",
-        // path: "/about/mission",
+        path: "/about/mission",
       },
       {
         name: "История и развитие",
-        // path: "/about/history",
+        path: "/about/history",
       },
       {
         name: "Команда",
-        // path: "/about/team",
+        path: "/about/team",
       },
     ],
   },
@@ -33,11 +33,11 @@ export const PAGES: TPage[] = [
       },
       {
         name: "Автоматизация процессов РНМ",
-        // path: "/services/automation-rnm",
+        path: "/services/automation-rnm",
       },
       {
         name: "Автоматизация процессов ГИС",
-        // path: "/services/automation-gis",
+        path: "/services/automation-gis",
       },
     ],
   },
@@ -47,15 +47,15 @@ export const PAGES: TPage[] = [
     subpages: [
       {
         name: "Искусственный интеллект и машинное обучение",
-        // path: "/technologies/ai",
+        path: "/technologies/ai",
       },
       {
         name: "Биг Дата и аналитика",
-        // path: "/technologies/big-data",
+        path: "/technologies/big-data",
       },
       {
         name: "Автоматизированные системы управления",
-        // path: "/technologies/automation",
+        path: "/technologies/automation",
       },
     ],
   },
@@ -65,15 +65,15 @@ export const PAGES: TPage[] = [
     subpages: [
       {
         name: "Успешные проекты",
-        // path: "/cases/successful",
+        path: "/cases/successful",
       },
       {
         name: "Технологические решения",
-        // path: "/cases/technological",
+        path: "/cases/technological",
       },
       {
         name: "Клиенты и отзывы",
-        // path: "/cases/clients",
+        path: "/cases/clients",
       },
     ],
   },
@@ -83,15 +83,15 @@ export const PAGES: TPage[] = [
     subpages: [
       {
         name: "Вакансии",
-        // path: "/career/vacancies",
+        path: "/career/vacancies",
       },
       {
         name: "Преимущества работы в AI Lab",
-        // path: "/career/benefits",
+        path: "/career/benefits",
       },
       {
         name: "Отправить резюме",
-        // path: "/career/send-resume",
+        path: "/career/send-resume",
       },
     ],
   },
@@ -101,15 +101,15 @@ export const PAGES: TPage[] = [
     subpages: [
       {
         name: "Контактная информация",
-        // path: "/contacts/info",
+        path: "/contacts/info",
       },
       {
         name: "Форма обратной связи",
-        // path: "/contacts/feedback",
+        path: "/contacts/feedback",
       },
       {
         name: "Карта расположения",
-        // path: "/contacts/map",
+        path: "/contacts/map",
       },
     ],
   },

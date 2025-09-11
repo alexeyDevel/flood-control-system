@@ -1,18 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { IStart } from '../app.type';
-import {
-  existsSync,
-  mkdir,
-  writeFile,
-  copyFile,
-  mkdirSync,
-  promises,
-} from 'node:fs';
-import * as path from 'node:path';
-import { ProcessService } from './process.service';
-import * as process from 'process';
 import * as dotenv from 'dotenv';
+import { existsSync, mkdirSync, promises, writeFile } from 'node:fs';
+import * as path from 'node:path';
+import * as process from 'process';
+import { IStart } from '../app.type';
 import { UploadForecastDto } from '../dto/uploadForecast.dto';
+import { ProcessService } from './process.service';
 
 dotenv.config();
 
@@ -35,7 +28,7 @@ export class AppService {
   }): Promise<{ message: string }> {
     return new Promise((resolve, reject) => {
       const header = Object.keys(fields).join(';');
-      const filePath = path.join(savePath, fileName, '/');
+      const filePath = path.join(savePath, fileName);
       const values = Object.values(fields)
         .map((value) => {
           const escapedValue = String(value).replace(/"/g, '""');
