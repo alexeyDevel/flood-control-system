@@ -21,8 +21,10 @@ async function bootstrap() {
   app.setGlobalPrefix('/api/v1');
   app.enableCors();
 
-  app.use(json({ limit: '5mb' }));
-  app.use(urlencoded({ extended: true, limit: '5mb', parameterLimit: 100000 }));
+  app.use(json({ limit: '10mb' }));
+  app.use(
+    urlencoded({ extended: true, limit: '10mb', parameterLimit: 100000 }),
+  );
   await app.listen(process.env.PORT ?? 2040);
 }
-bootstrap();
+void bootstrap();

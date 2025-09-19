@@ -1,11 +1,11 @@
 import { Box, Button, Typography } from "@mui/material";
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import Logo from "src/assets/logo.svg";
+import { authActions } from "src/stores/auth";
+import { StyledBox } from "ui/StyledBox";
 import { TextField } from "ui/TextField";
 import styles from "./SingIn.module.scss";
-import { StyledBox } from "ui/StyledBox";
-import Logo from "src/assets/logo.svg";
-import { useNavigate } from "react-router";
-import { useState } from "react";
-import { authActions } from "src/stores/auth";
 
 export const SingIn = () => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export const SingIn = () => {
     // Редирект на главную страницу после входа
     authActions
       .fetchlogin({ login: login, password: password })
-      .then(() => (window.history.length > 2 ? navigate(-1) : navigate("/")));
+      .then(() => (window.history.length > 2 ? navigate(-2) : navigate("/")));
   };
 
   return (

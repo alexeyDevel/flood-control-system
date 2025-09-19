@@ -1,20 +1,20 @@
-import { useState, useRef, ChangeEvent } from "react";
-import {
-  Box,
-  Typography,
-  Button,
-  Stack,
-  Input,
-  IconButton,
-} from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DeleteIcon from "@mui/icons-material/Delete";
+import {
+  Box,
+  Button,
+  IconButton,
+  Input,
+  Stack,
+  Typography,
+} from "@mui/material";
+import { ChangeEvent, useRef, useState } from "react";
 import { forecast } from "src/api/app/app";
+import { pushNotification } from "src/stores/notification";
 import {
   prepareFileForUpload,
   validateFileExtension,
 } from "src/utils/fileToBase64";
-import { pushNotification } from "src/stores/notification";
 
 export const ForecastForOptions = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -22,7 +22,7 @@ export const ForecastForOptions = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const ALLOWED_EXTENSIONS = [".xlsx", ".xls", ".csv"];
-  const MAX_FILE_SIZE_MB = 2;
+  const MAX_FILE_SIZE_MB = 10;
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
@@ -81,7 +81,7 @@ export const ForecastForOptions = () => {
     try {
       const base64 = await prepareFileForUpload(file, {
         allowedExtensions: [".xlsx", ".xls", ".csv"],
-        maxSizeMB: 5,
+        maxSizeMB: MAX_FILE_SIZE_MB,
       });
       const result = await forecast({
         fileName: file.name,
@@ -117,7 +117,7 @@ export const ForecastForOptions = () => {
 
       <Typography variant="body1">
         Отправьте свой вариант объёмов закачки. Пожалуйста, загрузите файл в
-        формате XLSX (Excel) с данными. Максимальный размер файла — 2 МБ.
+        формате XLSX (Excel) с данными. Максимальный размер файла — 10 МБ.
       </Typography>
 
       <Stack spacing={2} alignItems="flex-start">
