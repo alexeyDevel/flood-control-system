@@ -22,6 +22,7 @@ export const sendRequest = async (props: TNfluence) => {
       bl: props.bl,
       strat: props.strat,
       calculationType: props.calculationType,
+      radius: props.radius,
     });
     pushNotification({
       title: "Запрос успешно отправлен!",

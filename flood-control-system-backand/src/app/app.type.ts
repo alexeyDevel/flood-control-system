@@ -10,4 +10,5 @@ export interface IStart {
   strat: string;
   userId: string;
   calculationType: CalculationTypeEnum;
+  radius: string;
 }

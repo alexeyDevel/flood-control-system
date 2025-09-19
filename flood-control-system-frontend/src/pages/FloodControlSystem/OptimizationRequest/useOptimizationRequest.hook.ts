@@ -11,6 +11,7 @@ export const useOptimizationRequest = () => {
     bl: "",
     strat: "",
     calculationType: 1,
+    radius: "0",
   });
 
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ export const useOptimizationRequest = () => {
       bl: formData.bl,
       strat: formData.strat,
       calculationType: formData.calculationType,
+      radius: formData.radius,
     })
       .then(() => {
         pushNotification({

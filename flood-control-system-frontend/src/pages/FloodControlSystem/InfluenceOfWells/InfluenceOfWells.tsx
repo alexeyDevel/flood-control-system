@@ -29,6 +29,7 @@ export const InfluenceOfWells = () => {
     bl: "",
     strat: "",
     calculationType: 1,
+    radius: "0",
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -161,6 +162,25 @@ export const InfluenceOfWells = () => {
               label="Расчёты по забойному давлению"
             />
           </RadioGroup>
+        </FormControl>
+        <FormControl fullWidth margin="normal">
+          <Autocomplete
+            options={Array.from({ length: 51 }, (_, i) => (i * 100).toString())} // Создаем массив [0, 100, 200, ..., 5000]
+            value={"0"}
+            onChange={(_, newValue) => {
+              setFormData((prevState) => ({
+                ...prevState,
+                radius: newValue || "0",
+              }));
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Радиус до окружающих скважин"
+                placeholder="Радиус указан в метрах"
+              />
+            )}
+          />
         </FormControl>
 
         <Button

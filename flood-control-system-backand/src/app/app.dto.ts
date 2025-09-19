@@ -1,29 +1,55 @@
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsNumberString, IsString } from 'class-validator';
 import { CalculationTypeEnum, IStart } from './app.type';
 
 export class StartDto implements Omit<IStart, 'userId'> {
+  @IsNumberString(
+    {},
+    {
+      message: '"Радиус" должен быть строкой, содержащей число',
+    },
+  )
+  radius: string;
+
   @IsEnum(CalculationTypeEnum, {
     message: `"Тип расчетов" должен быть одним из вариантов`,
   })
-  @IsNotEmpty({ message: `"Тип расчетов" не может быть пустым` })
+  @IsNotEmpty({
+    message: `"Тип расчетов" не может быть пустым`,
+  })
   calculationType: CalculationTypeEnum;
 
-  @IsString({ message: `"НГДУ" должно быть строкой` })
-  @IsNotEmpty({ message: `"НГДУ" не может быть пустым` })
+  @IsString({
+    message: `"НГДУ" должно быть строкой`,
+  })
+  @IsNotEmpty({
+    message: `"НГДУ" не может быть пустым`,
+  })
   ngdu: string;
 
-  @IsString({ message: `"Месторождение" должно быть строкой` })
-  @IsNotEmpty({ message: `"Месторождение" не может быть пустым` })
+  @IsString({
+    message: `"Месторождение" должно быть строкой`,
+  })
+  @IsNotEmpty({
+    message: `"Месторождение" не может быть пустым`,
+  })
   field: string;
 
   @IsString({ message: `"Участок" должна быть строкой` })
   area: string;
 
-  @IsString({ message: `"Блок" должно быть строкой` })
-  @IsNotEmpty({ message: `"Блок" не может быть пустым` })
+  @IsString({
+    message: `"Блок" должно быть строкой`,
+  })
+  @IsNotEmpty({
+    message: `"Блок" не может быть пустым`,
+  })
   bl: string;
 
-  @IsString({ message: `"Горизонт" должна быть строкой` })
-  @IsNotEmpty({ message: `"Горизонт" не может быть пустым` })
+  @IsString({
+    message: `"Горизонт" должна быть строкой`,
+  })
+  @IsNotEmpty({
+    message: `"Горизонт" не может быть пустым`,
+  })
   strat: string;
 }
