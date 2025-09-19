@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsEnum } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { CalculationTypeEnum, IStart } from './app.type';
 
 export class StartDto implements Omit<IStart, 'userId'> {
@@ -17,7 +17,6 @@ export class StartDto implements Omit<IStart, 'userId'> {
   field: string;
 
   @IsString({ message: `"Участок" должна быть строкой` })
-  @IsNotEmpty({ message: `"Участок" не может быть пустым` })
   area: string;
 
   @IsString({ message: `"Блок" должно быть строкой` })

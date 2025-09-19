@@ -22,7 +22,7 @@ export const ForecastForOptions = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const ALLOWED_EXTENSIONS = [".xlsx", ".xls", ".csv"];
-  const MAX_FILE_SIZE_MB = 2;
+  const MAX_FILE_SIZE_MB = 10;
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
@@ -81,7 +81,7 @@ export const ForecastForOptions = () => {
     try {
       const base64 = await prepareFileForUpload(file, {
         allowedExtensions: [".xlsx", ".xls", ".csv"],
-        maxSizeMB: 10,
+        maxSizeMB: MAX_FILE_SIZE_MB,
       });
       const result = await forecast({
         fileName: file.name,
