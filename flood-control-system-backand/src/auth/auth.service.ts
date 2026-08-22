@@ -23,7 +23,7 @@ export class AuthService {
     if (!isMatch) {
       throw new NotFoundException('Invalid credentials');
     }
-    return { login: user.login, _id: user._id as string };
+    return { login: user.login, _id: user._id.toString() };
   }
 
   async login(user: ILoginCredentials): Promise<LoginResponseDto> {
